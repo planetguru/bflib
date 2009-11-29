@@ -1,0 +1,52 @@
+Copyright Christopher Lacy-Hulbert 2009
+
+This file is part of Bflib.
+
+Bflib is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Bflib is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Bflib.  If not, see <http://www.gnu.org/licenses/>.
+
+
+
+Introduction
+--------------
+
+The best way to get started with this library is to install the demo and see it 
+working first.
+
+To get started, extract the contents of the bflib archive into your document root.
+
+Next, you should edit the classes/betfairConstants.class.php  file.  In here, you will
+need to specify your Betfair username and password and the Apache virtualhost which you 
+will be running the demo under.  Don't forget to include the .htaccess file in your 'www'
+folder.
+
+You should also be sure to have PHP compiled with soap and ssl support. I also recommend
+using the latest version of PHP, which fixes bugs in the stream wrappers API, which can
+fail when it encounters a trailing \n on the service WSDL file.  If you are unsure, the
+following PHP compliation works for me (with the supporting libs in place, of course):
+
+./configure --with-apxs2=/usr/local/apache2/bin/apxs --with-mysql=/usr/local/mysql  --enable-pdo --with-pdo-mysql=/usr/local/mysql --with-zlib-dir=../zlib-1.2.3 --with-jpeg-dir=/usr/lib --with-curl --enable-soap --with-openssl
+
+
+MVC
+----
+
+The bflib code is based on the MVC pattern, with the betfairDialogue class serving as the
+model. This is the class which you are least likely to modify, and if you do modify it, 
+it's the class you will most likely want to commit updates/patches to on github. The view
+is completely domain-specific. It is very likely that you will modify the view to get it 
+to construct completely different html fragments, or perhaps XML/JSON as output.  The controller
+behaves as glue between the whole lot, and demonstrates how you can envoke dialogue and view
+objects and pass data between them.
+
+
