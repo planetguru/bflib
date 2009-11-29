@@ -1,0 +1,60 @@
+<?php
+/**
+    Copyright Christopher Lacy-Hulbert 2009
+
+    This file is part of Bflib.
+
+    Bflib is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Bflib is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Bflib.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/**
+* Constants used around the library
+*
+* @author Chris Lacy-Hulbert <chris@spiration.co.uk>
+*/
+class betfairConstants {
+	/**
+	* URLs of Betfair's soap exchange WSDL documents
+	*
+	*/
+        CONST GLOBALSERVICE = 'https://api.betfair.com/global/v3/BFGlobalService.wsdl';
+        CONST EXCHANGESERVICE = 'https://api.betfair.com/exchange/v5/BFExchangeService.wsdl';
+
+        CONST DEBUG_MODE = true;
+	CONST CURRENCY_CODE = 'GBP';
+
+	/**
+	* Hostname should be changed to match the dns hostname 
+	* e.g. www.backingline.com
+	*
+	*/
+	CONST HOSTNAME = 'bflib';
+
+	/**
+	* bdp developer credentials. You should change the USERNAME and
+	* PASSWORD to match your own username and password on betfair.
+	* Remember that your account will need to be active, with recent transactions and
+	* cleared funds in order for the SOAP APIs to allow you to authenticate
+	*/
+	const USERNAME     = '';
+	const PASSWORD     = '';
+	const PRODUCTID    = 82;
+	const VENDORID     = 0;
+	const LOCATIONID   = 0;
+	const IPADDRESS    = 0;
+
+	public function __construct(){}
+}
+
+?>
