@@ -170,17 +170,34 @@ class betfairDialogue {
 		return( $res );
 	}
 
+
+	/**
+	* perform further processing on the soap data before it gets passed to the exchange.
+	* This includes tasks like building object ids into the request object, or setting 
+	* a currency code, or loading constants into data objects.
+	*
+	* operates directly upon $this->data 
+	*
+	* @todo collapse to a switch statement; move data preparation to a helper class
+	*
+	*/
+	public function prepareRequestData( ){
+
+	}
+
+
 	/**
 	* perform further processing on the soap data before it gets passed to the view
 	* this includes tasks like parsing market price data into structured form. It might
 	* make sense to move these out into seperate methods of a processor library if it gets
 	* too unwieldly.
 	*
+	* @todo collapse to a switch statement; move data preparation to a helper class
 	* @param array $datain soap response object as returned from the active client
 	* @return array $dataout soap response object enhanced with additional/formatted data
 	*
 	*/
-	public function prepareData( $datain ){
+	public function prepareResponseData( $datain ){
 		$dataout = $datain;
 
 		/* if this contains compressed market data, then decompress and add a new marketData node */
@@ -230,6 +247,34 @@ class betfairDialogue {
 				$runner->nearSPPrice = $infoElements[9];
 				$runner->actualSPPrice = $infoElements[10];
 				$dataout->allRunnerData[]=$runner;
+			}
+		}else if(true === isset($datain->Result->marketData)){
+			$marketItems = array();
+			$marketItems = explode(':',$datain->Result->marketData);
+			$dataout->Result->marketDataItems = array();
+
+			foreach($marketItems as $marketItem){
+				$market = new stdClass;
+				$marketElements = explode('~',$marketItem);
+				$market->marketId = $marketElements[0];
+				$market->marketName = $marketElements[1];
+				$market->marketType = $marketElements[2];
+				$market->marketStatus = $marketElements[3];
+				$market->eventDate = $marketElements[4];
+				$market->menuPath = $marketElements[5];
+				$market->eventHierarchy = $marketElements[6];
+				$market->betDelay = $marketElements[7];
+				$market->exchangeId = $marketElements[8];
+				$market->ISOCountryCode = $marketElements[9];
+				$market->lastRefresh = $marketElements[10];
+				$market->numberOfRunners = $marketElements[11];
+				$market->numberOfWinners = $marketElements[12];
+				$market->totalAmountMatched = $marketElements[13];
+				$market->BSPMarket = $marketElements[14];
+				$market->turningInPlay = $marketElements[15];
+				if(true == is_numeric($market->marketId)){
+					$dataout->Result->marketDataItems[]=$market;
+				}
 			}
 		}
 

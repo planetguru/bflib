@@ -60,13 +60,20 @@ class betfairView {
         public function render( ){
 		/** show a dump of the soapResult object **/
 		echo("<textarea rows=10 cols=120>");
-		betfairHelper::dump($this->soapResponse);
+			if( false === isset($this->soapResponse) ){
+				?>This area will show raw exchange response output with each exchange request<?php
+			}else if(true === isset($this->soapResponse->Result->paymentCardItems)){
+				?>I am not going to show you this bit :)<?php
+			}else{
+				betfairHelper::dump($this->soapResponse);
+			}
 		echo("</textarea>");
 
 		$returnHTML='';
 
 		switch( $this->context ){
 			case 'getActiveEventTypes':
+			case 'getAllEventTypes':
 				foreach($this->soapResponse->Result->eventTypeItems->EventType as $eventType){	
 $html="<li>{$eventType->name} - <a href='http://".betfairConstants::HOSTNAME."/v1/getAllMarkets/{$eventType->id}'> get all markets </a> | <a href='http://".betfairConstants::HOSTNAME."/v1/getInPlayMarkets/{$eventType->id}'> get in-play markets </a></li>";
 					$returnHTML.=$html;
@@ -101,7 +108,11 @@ $html="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPr
 
 
 			default:
-				$returnHTML="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getActiveEventTypes/'>start here</a>";
+				$returnHTML="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getActiveEventTypes/'>get active event types</a>";
+				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getAllEventTypes/'>get all event types</a>";
+				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getAccountFunds/'>get account funds</a>";
+				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getAllCurrencies/'>get all currencies</a>";
+				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getPaymentCard/'>get payment card</a>";
 				break;
 		}
 		return($returnHTML);

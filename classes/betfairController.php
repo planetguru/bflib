@@ -90,7 +90,7 @@ class betfairController {
 				$this->dialogue->setContext($this->context);
 				$this->dialogue->setData($this->data);
 				$soapResult = $this->dialogue->execute();
-				$soapResult = $this->dialogue->prepareData($soapResult);
+				$soapResult = $this->dialogue->prepareResponseData($soapResult);
 			}
 			$this->view->setContext( $this->dialogue->getContext() );
 			$this->view->setSoapResponse($soapResult);
@@ -149,8 +149,9 @@ class betfairController {
 	* @param $context the context, or 'verb' of the current request
 	* @param $id the id on which the method will be run. Usually an integer, but could be an array of ints
 	* @param $url passed in for convenience in cases where the verb and target id are insufficient
-	*
 	* @return the soapMessage array with fully constructed request and session data
+	*
+	* @todo move this into betfairDialogue as prepareRequestData; rename prepareData to prepareResponseData
 	*/
 	public function constructRequestData($context, $id, $uri){
 		$soapMessage = array();
@@ -168,7 +169,9 @@ class betfairController {
 				break;
 
 			case 'getAllMarkets':
-				$soapMessage['request']['eventTypeIds'][] = $id;
+				if( true === is_numeric( $id )){
+					$soapMessage['request']['eventTypeIds'][] = $id;
+				}
 				break;
 		
 			case 'getCompleteMarketPricesCompressed':
