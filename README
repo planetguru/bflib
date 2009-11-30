@@ -43,10 +43,34 @@ MVC
 
 The bflib code is based on the MVC pattern, with the betfairDialogue class serving as the
 model. This is the class which you are least likely to modify, and if you do modify it, 
-it's the class you will most likely want to commit updates/patches to on github. The view
-is completely domain-specific. It is very likely that you will modify the view to get it 
-to construct completely different html fragments, or perhaps XML/JSON as output.  The controller
-behaves as glue between the whole lot, and demonstrates how you can envoke dialogue and view
-objects and pass data between them.
+it's the class you will most likely want to commit updates/patches to on github. 
 
+The 'view' is completely domain-specific. It is very likely that you will modify the view to get it 
+to construct completely different html fragments, or perhaps XML/JSON as output.  
+
+The controller behaves as glue between the whole lot, and demonstrates how you can envoke dialogue and view
+objects and pass data between them.  
+
+
+Note:
+---------
+
+Please note that if you have are attempting to view the demo app straigt off your document root, you
+will need to make two changes:
+
+1) Modify the 'splitRequestParts()' method, decrementing the indedx in requestParts[<index>] by one
+2) Remove 'bfapi' from the following line in your .htaccess:
+
+	RewriteRule ^(.*)$ /bflib/index.php [L]
+
+so that it reads:
+
+	RewriteRule ^(.*)$ /index.php [L]
+
+By doing this, you are telling the application that your index.php file lives directly within the 
+DocumentRoot and not under a subfolder.
+
+Likewise, if you have two directory layers under the documentroot before you encounter the index.php,
+you will need to increment the requestParts[<index>] value by one and reflect the new root path in your
+RewriteRule.
 

@@ -32,14 +32,25 @@ class betfairConstants {
         CONST EXCHANGESERVICE = 'https://api.betfair.com/exchange/v5/BFExchangeService.wsdl';
 
         CONST DEBUG_MODE = true;
-	CONST CURRENCY_CODE = 'GBP';
+        CONST CURRENCY_CODE = 'GBP';
 
 	/**
 	* Hostname should be changed to match the dns hostname 
-	* e.g. www.backingline.com
+	* e.g. www.backingline.com, Note: if you are NOT keeping 'bflib' in your path, or 'www',
+	* you will have to decrement the positional values in your controller by one.
 	*
+	* @todo: create a separate configuration value to represent the base path
 	*/
-	CONST HOSTNAME = 'bflib';
+	CONST HOSTNAME = '';
+
+	/* examples */
+
+	/* would require modification to splitRequestURI to reduce array indexes by 1 */
+        // CONST HOSTNAME = 'www.backingline.com';  
+
+	/* will require a change to .htaccess if served under somthing other than 'bflib' */
+	// CONST HOSTNAME = 'www.backingline.com/bflib';
+        // CONST HOSTNAME = 'backingline/bflib';
 
 	/**
 	* bdp developer credentials. You should change the USERNAME and

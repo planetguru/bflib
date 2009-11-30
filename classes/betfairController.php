@@ -131,12 +131,12 @@ class betfairController {
 		/**  URI looks like:  /v1/GetEvents/13/'; */
 		$this->requestParts = explode('/',$uri);
 		//betfairHelper::dump($this->requestParts);
-		if( isset($this->requestParts[2]) ){
-			$this->context = $this->requestParts[2];
+		if( isset($this->requestParts[3]) ){
+			$this->context = $this->requestParts[3];
 		}
 
-		if( isset($this->requestParts[3]) && true === is_numeric($this->requestParts[3]) ){
-			$this->itemId = $this->requestParts[3];
+		if( isset($this->requestParts[4]) && true === is_numeric($this->requestParts[4]) ){
+			$this->itemId = $this->requestParts[4];
 		}else{
 			$this->itemId = 0;
 		}
@@ -177,11 +177,13 @@ class betfairController {
 				break;
 
 			case 'GetEvents':	
-				$soapMessage['request']['eventParentId']=$list[2];
+				//$soapMessage['request']['eventParentId']=$list[3];
+				$soapMessage['request']['eventParentId']=$id;
 				break;
 
 			case 'GetEvent':
-				$soapMessage['request']['eventParentId']=$list[2];
+				//$soapMessage['request']['eventParentId']=$list[3];
+				$soapMessage['request']['eventParentId']=$id;
 				break;
 
 			case 'GetMarketPrices';
