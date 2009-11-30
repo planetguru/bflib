@@ -41,7 +41,7 @@ class betfairConstants {
 	*
 	* @todo: create a separate configuration value to represent the base path
 	*/
-	// CONST HOSTNAME = '';
+	CONST HOSTNAME = '';
 
 	/* examples */
 
@@ -50,7 +50,7 @@ class betfairConstants {
 
 	/* will require a change to .htaccess if served under somthing other than 'bflib' */
 	// CONST HOSTNAME = 'www.backingline.com/bflib';
-         CONST HOSTNAME = 'backingline/bflib';
+        // CONST HOSTNAME = 'backingline/bflib';
 
 	/**
 	* bdp developer credentials. You should change the USERNAME and
