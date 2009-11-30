@@ -55,10 +55,10 @@ objects and pass data between them.
 Note:
 ---------
 
-Please note that if you have are attempting to view the demo app straigt off your document root, you
+Please note that if you have are attempting to view the demo app straight off your document root, you
 will need to make two changes:
 
-1) Modify the 'splitRequestParts()' method, decrementing the indedx in requestParts[<index>] by one
+1) Modify the 'splitRequestParts()' method, decrementing the index in requestParts[<index>] by one
 2) Remove 'bfapi' from the following line in your .htaccess:
 
 	RewriteRule ^(.*)$ /bflib/index.php [L]
