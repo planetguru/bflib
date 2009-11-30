@@ -31,7 +31,7 @@ class betfairConstants {
         CONST GLOBALSERVICE = 'https://api.betfair.com/global/v3/BFGlobalService.wsdl';
         CONST EXCHANGESERVICE = 'https://api.betfair.com/exchange/v5/BFExchangeService.wsdl';
 
-        CONST DEBUG_MODE = true;
+        CONST DEBUG_MODE = true;  // change to true to enable full dumps of soap error responses
         CONST CURRENCY_CODE = 'GBP';
 
 	/**
@@ -41,7 +41,7 @@ class betfairConstants {
 	*
 	* @todo: create a separate configuration value to represent the base path
 	*/
-	CONST HOSTNAME = '';
+	// CONST HOSTNAME = '';
 
 	/* examples */
 
@@ -50,7 +50,7 @@ class betfairConstants {
 
 	/* will require a change to .htaccess if served under somthing other than 'bflib' */
 	// CONST HOSTNAME = 'www.backingline.com/bflib';
-        // CONST HOSTNAME = 'backingline/bflib';
+         CONST HOSTNAME = 'backingline/bflib';
 
 	/**
 	* bdp developer credentials. You should change the USERNAME and

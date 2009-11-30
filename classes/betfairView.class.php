@@ -68,12 +68,23 @@ class betfairView {
 		switch( $this->context ){
 			case 'getActiveEventTypes':
 				foreach($this->soapResponse->Result->eventTypeItems->EventType as $eventType){	
-$html="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getAllMarkets/{$eventType->id}'>{$eventType->name}</a></li>";
+$html="<li>{$eventType->name} - <a href='http://".betfairConstants::HOSTNAME."/v1/getAllMarkets/{$eventType->id}'> get all markets </a> | <a href='http://".betfairConstants::HOSTNAME."/v1/getInPlayMarkets/{$eventType->id}'> get in-play markets </a></li>";
 					$returnHTML.=$html;
 				}
 				break;
 
 			case 'getAllMarkets':
+				$markets = explode(":",$this->soapResponse->Result->marketData);
+				array_shift($markets);
+				foreach($markets as $market){
+					$marketData = explode('~',$market);
+$html="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>{$marketData[1]}</a></li>";
+					$returnHTML.= $html;
+
+				}
+				break;
+
+			case 'getInPlayMarkets':
 				$markets = explode(":",$this->soapResponse->Result->marketData);
 				array_shift($markets);
 				foreach($markets as $market){

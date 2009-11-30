@@ -152,7 +152,6 @@ class betfairDialogue {
 	*/
 	public function execute(){
 		/* which interface does this method live in? */
-		//betfairHelper::dump($this->exchangeMethods);
 		if(true === in_array($this->context, $this->globalMethods)){
 			$this->activeClient = $this->globalClient;
 		}else if(true === in_array($this->context, $this->exchangeMethods)){
@@ -260,10 +259,12 @@ class betfairDialogue {
 	* poor man's soapfault dump to stdout
 	*
 	* @param object $fault soapfault object
+	* @todo modify this to make a betairLogger:: call
 	*/
 	private function handleError( SoapFault $fault ){
-		var_dump($fault);
-		exit();
+		if(true === betfairConstants::DEBUG_MODE ){
+			betfairHelper::dumpAndExit($fault);
+		}
 	}
 }
 ?>
