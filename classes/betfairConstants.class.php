@@ -31,7 +31,12 @@ class betfairConstants {
         CONST GLOBALSERVICE = 'https://api.betfair.com/global/v3/BFGlobalService.wsdl';
         CONST EXCHANGESERVICE = 'https://api.betfair.com/exchange/v5/BFExchangeService.wsdl';
 
-        CONST DEBUG_MODE = true;  // change to true to enable full dumps of soap error responses
+        /* enable debug mode for full dumps of soap error responses. Use with extreme caution */
+        /* as this can result in exposing exchange login credentials */
+        CONST DEBUG_MODE = false;
+
+        /*  not yet implemented, but enable to turn on verbose logging */
+        CONST LOGGER_MODE = false;
         CONST CURRENCY_CODE = 'GBP';
 
 	/**
