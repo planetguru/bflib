@@ -47,6 +47,9 @@ function __autoload( $class ){
 * interaction between the betfairDialogue and the betfairView. The controller is also responsible for
 * discerning context from the parent URI and eventually serving the rendered view output to the user
 *
+* @TODO - current thinking is to move this out of the framework, since it's really demo-specific (with
+* all the URL handling stuff. Perhaps make this the betfairDemoRequestHandler, then package the bit which
+* deals with structuring request data and manipulating the model etc as the betfairController 
 */
 class betfairController {
 	public $requestURI;
@@ -174,6 +177,12 @@ class betfairController {
 				}
 				break;
 		
+			case 'getMarket':
+				$soapMessage['request']['marketId'] = $id;
+				$soapMessage['request']['includeCouponLinks'] = false;
+				$soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
+				break;
+
 			case 'getCompleteMarketPricesCompressed':
 				$soapMessage['request']['marketId'] = $id;
 				$soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
