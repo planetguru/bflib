@@ -49,7 +49,6 @@ class betfairConstants {
 	CONST HOSTNAME = '';
 
 	/* examples */
-
 	/* would require modification to splitRequestURI to reduce array indexes by 1 */
         // CONST HOSTNAME = 'www.backingline.com';  
 
@@ -65,8 +64,8 @@ class betfairConstants {
 	*/
 	const USERNAME     = '';
 	const PASSWORD     = '';
-	const PRODUCTID    = 82;
-	const VENDORID     = 0;
+	const PRODUCTID    = 82;   // 82 for non-vendor, else 0.
+	const VENDORID     = 0;  // v1242
 	const LOCATIONID   = 0;
 	const IPADDRESS    = 0;
 
