@@ -31,16 +31,16 @@
 
 /**
 * Define autoload classpath and require it in.
-*
+* Now removed, since autoloading should probably be governed by the calling application
 * @param $class The class to be loaded
 *
-*/
 function __autoload( $class ){
 	$classpath = '../classes/'.$class.'.class.php';
 	if (file_exists( $classpath )){
 		require_once($classpath);
 	}
 }
+*/
 
 /**
 * The betfairController class loosely acts as an application controller in MVC-speak. This class handles
@@ -52,19 +52,30 @@ function __autoload( $class ){
 * deals with structuring request data and manipulating the model etc as the betfairController 
 */
 class betfairController {
-	public $requestURI;
 	public $context = '';
 	public $data = array();
 	public $requestParts = array();
-	private $itemId;
+	public $itemId;
 	private $html;
 
 	/**
 	* construct controller object
 	*
 	*/
-        public function __construct( $uri ){ 
-		$this->splitRequestURI( $uri );
+        public function __construct( ){ 
+		/** first login - currently on every call with forced 'login' context **/
+		$this->prepareDialogue();
+		$loginresult = $this->login();
+	}
+
+	/**
+	* set up the dialogue object, request function lists from the service WSDLs,
+	*
+	*/
+	public function prepareDialogue(){
+		$this->dialogue = betfairDialogue::getInstance();
+		$this->dialogue->connect();	
+		$this->dialogue->getFunctionsFromWSDL();
 	}
 
 	/**
@@ -74,18 +85,9 @@ class betfairController {
 	*
 	*/
 	public function run(){
-		/* we will need the view at the end of this method */
-		$this->view = new betfairView();
-
 		/* if there is no context, there is nothing to run */
 		if( false === empty( $this->context )){
-			$this->dialogue = betfairDialogue::getInstance();
-			$this->dialogue->connect();	
-			$this->dialogue->getFunctionsFromWSDL();
-
-			/** first login - currently on every call with forced 'login' context **/
-			$loginresult = $this->login();
-			$reqdata = $this->constructRequestData($this->context, $this->itemId, $this->requestURI);
+			$reqdata = $this->constructRequestData($this->context, $this->itemId);
 
 			/** then call the required context if set **/ 
 			if(!empty($this->context)){
@@ -95,20 +97,11 @@ class betfairController {
 				$soapResult = $this->dialogue->execute();
 				$soapResult = $this->dialogue->prepareResponseData($soapResult);
 			}
-			$this->view->setContext( $this->dialogue->getContext() );
-			$this->view->setSoapResponse($soapResult);
 		}
-		$this->html = $this->view->render();
-		$this->display();
+		if(isset($soapResult) && false === empty($soapResult)){
+			return($soapResult);
+		}
 	}
-
-	/*
-	* flush the html out to the browser
-	*
-	*/
-	private function display(){
-		echo($this->html);
-	}	
 
 	/*
 	* Set up a 'login' request to be passed through the current dialogue
@@ -117,32 +110,9 @@ class betfairController {
 	*/
 	public function login(){
 		$this->dialogue->setContext('login');
-		$this->dialogue->setData($this->constructRequestData('login', 0, $this->requestURI));  
+		$this->dialogue->setData($this->constructRequestData('login', 0));  
 		$soapResult = $this->dialogue->execute();
 		return($soapResult);
-	}
-
-	/** 
-	* Break the URI into constituent parts and set the current context for this bf dialogue
-	* also set the requestParts into a class array variable
-
-	* @param $uri the URI of the request being handled
-	*/
-	public function splitRequestURI( $uri ){
-		$this->requestURI = $uri;
-
-		/**  URI looks like:  /v1/GetEvents/13/'; */
-		$this->requestParts = explode('/',$uri);
-		//betfairHelper::dump($this->requestParts);
-		if( isset($this->requestParts[3]) ){
-			$this->context = $this->requestParts[3];
-		}
-
-		if( isset($this->requestParts[4]) && true === is_numeric($this->requestParts[4]) ){
-			$this->itemId = $this->requestParts[4];
-		}else{
-			$this->itemId = 0;
-		}
 	}
 
 	/** 
@@ -156,7 +126,7 @@ class betfairController {
 	*
 	* @todo move this into betfairDialogue as prepareRequestData; rename prepareData to prepareResponseData
 	*/
-	public function constructRequestData($context, $id, $uri){
+	public function constructRequestData($context, $id){
 		$soapMessage = array();
 		$soapMessage['request']=array();
 

@@ -26,7 +26,7 @@
 *
 * @author Chris Lacy-Hulbert <chris@spiration.co.uk>
 */
-class betfairView {
+class bflibDemoView {
 	private $context;
 	private $soapResponse;
 
@@ -85,7 +85,11 @@ $html="<li>{$eventType->name} - <a href='http://".betfairConstants::HOSTNAME."/v
 				array_shift($markets);
 				foreach($markets as $market){
 					$marketData = explode('~',$market);
-$html="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>{$marketData[1]}</a></li>";
+$html="<li> {$marketData[1]} 
+<a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>get complete market prices compressed</a> | 
+<a href='http://".betfairConstants::HOSTNAME."/v1/getMarket/{$marketData[0]}'>get market</a> |
+<a href='http://".betfairConstants::HOSTNAME."/v1/getBFMarketPrices/{$marketData[0]}'>get BF market prices</a> |
+</li>";
 					$returnHTML.= $html;
 
 				}
@@ -100,6 +104,10 @@ $html="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPr
 					$returnHTML.= $html;
 
 				}
+				break;
+
+			case 'getMarket':
+				betfairHelper::dump($this->soapResponse);
 				break;
 
 			case 'getCompleteMarketPricesCompressed':
