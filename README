@@ -55,7 +55,7 @@ objects and pass data between them.
 Note:
 ---------
 
-Please note that if you have are attempting to view the demo app straight off your document root, you
+Please note that if you are attempting to view the demo app straight off your document root, you
 will need to make two changes:
 
 1) Modify the 'splitRequestParts()' method, decrementing the index in requestParts[<index>] by one
