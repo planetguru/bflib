@@ -34,7 +34,8 @@ class bflibDemoView {
 	* constructor
 	*
 	*/
-        public function __construct(){ }
+        public function __construct(){ 
+	}
 
 	/**
 	* register the current context
@@ -51,6 +52,7 @@ class bflibDemoView {
 	*/	
 	public function setSoapResponse( $val ){
 		$this->soapResponse = $val;
+		$this->soapResponse->Result->header->sessionToken='concealed';
 	}
 
 	/**
