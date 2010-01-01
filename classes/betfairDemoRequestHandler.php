@@ -90,13 +90,12 @@ class betfairDemoRequestHandler {
 					}
 				}
 			}
-		}else{
-			/* just hand over to the view class */	
-			$this->view->setSoapResponse($soapResult);
- 			$this->view->setContext( $this->context );
-			$this->html = $this->view->render();
-			$this->display();
 		}
+		/* just hand over to the view class */	
+		$this->view->setSoapResponse($soapResult);
+ 		$this->view->setContext( $this->context );
+		$this->html = $this->view->render();
+		$this->display();
 	}
 
 	public function scheduleRequest(){
