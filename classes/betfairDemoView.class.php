@@ -151,11 +151,11 @@ EOT;
 				break;	
 								
 			default:
-				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getActiveEventTypes/'>get active event types</a>";
-				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getAllEventTypes/'>get all event types</a>";
-				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getAccountFunds/'>get account funds</a>";
-				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getAllCurrencies/'>get all currencies</a>";
-				$returnHTML.="<br/><a href='http://".betfairConstants::HOSTNAME."/v1/getPaymentCard/'>get payment card</a>";
+				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getActiveEventTypes/'>get active event types</a></p>";
+				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllEventTypes/'>get all event types</a></p>";
+				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAccountFunds/'>get account funds</a></p>";
+				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllCurrencies/'>get all currencies</a></p>";
+				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getPaymentCard/'>get payment card</a></p>";
 				break;
 		}
 		$chunk = <<<EOT
