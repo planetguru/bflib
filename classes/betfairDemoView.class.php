@@ -66,7 +66,7 @@ class betfairDemoView {
  			"http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
-   <title>YUI Base Page</title>
+   <title>BFlib - Betfair Library - Demo Application</title>
    <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
 <link rel="stylesheet" type="text/css" href="http://
 EOT;
