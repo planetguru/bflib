@@ -37,6 +37,15 @@ class betfairHelper {
 	}
 
 	/**
+	* Dump data to stdout
+	*
+	* @param $val data to be dumped
+	*/
+	public function returnVar($val){
+		return(print_r($val,true));
+	}
+
+	/**
 	* Dump data to stdout and stop execution
 	*
 	* @param $val data to be dumped

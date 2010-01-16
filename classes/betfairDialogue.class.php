@@ -203,6 +203,8 @@ class betfairDialogue {
 		/* if this contains compressed market data, then decompress and add a new marketData node */
 		if(true === isset($datain->Result->completeMarketPrices)){
 			$completeMarketPrices = $datain->Result->completeMarketPrices;
+			$market = new stdClass;
+			$market->marketId = substr($completeMarketPrices, 0, stripos($completeMarketPrices,'~'));
 			$withoutMarketidAndDelay = ltrim(strstr($completeMarketPrices, '~'),'~');
 			$withoutMarketidAndDelay = ltrim(strstr($withoutMarketidAndDelay, '~'),'~');
 			$withoutMarketidAndDelay = ltrim($withoutMarketidAndDelay, ':');
@@ -224,10 +226,18 @@ class betfairDialogue {
 				foreach($priceChunks as $priceChunk){
 					$price = new stdClass;
 					$price->odds = $priceChunk[0];
-					$price->backAmountAvailable = $priceChunk[1];
-					$price->layAmountAvailable = $priceChunk[2];
-					$price->BSPBackAvailableAmount = $priceChunk[3];
-					$price->BSPLayAvailableAmount = $priceChunk[4];
+					if(isset($priceChunk[1])){
+						$price->backAmountAvailable = $priceChunk[1];
+					}
+					if(isset($priceChunk[2])){
+						$price->layAmountAvailable = $priceChunk[2];	
+					}
+					if(isset($priceChunk[3])){
+						$price->BSPBackAvailableAmount = $priceChunk[3];
+					}
+					if(isset($priceChunk[4])){
+						$price->BSPLayAvailableAmount = $priceChunk[4];
+					}
 					if(is_numeric($price->odds)){
 						$runner->prices[]=$price;
 					}
@@ -235,17 +245,39 @@ class betfairDialogue {
 	
 				/* extract all the runner dada  */
 				$infoElements = explode('~',$informationRow);
-				$runner->selectionId = $infoElements[0];
-				$runner->orderIndex = $infoElements[1];
-				$runner->amountMatched = $infoElements[2];
-				$runner->lastPriceMatched = $infoElements[3];
-				$runner->handicap = $infoElements[4];
-				$runner->reductionFactor = $infoElements[5];
-				$runner->vacant = $infoElements[6];
-				$runner->asianLineId = $infoElements[7];
-				$runner->farSPPrice = $infoElements[8];
-				$runner->nearSPPrice = $infoElements[9];
-				$runner->actualSPPrice = $infoElements[10];
+				if(isset($infoElements[0])){
+					$runner->selectionId = $infoElements[0];
+				}
+				if(isset($infoElements[2])){
+					$runner->orderIndex = $infoElements[1];
+				}
+				if(isset($infoElements[2])){
+					$runner->amountMatched = $infoElements[2];
+				}
+				if(isset($infoElements[3])){
+					$runner->lastPriceMatched = $infoElements[3];
+				}
+				if(isset($infoElements[4])){
+					$runner->handicap = $infoElements[4];
+				}
+				if(isset($infoElements[5])){
+					$runner->reductionFactor = $infoElements[5];
+				}
+				if(isset($infoElements[6])){
+					$runner->vacant = $infoElements[6];
+				}
+				if(isset($infoElements[7])){
+					$runner->asianLineId = $infoElements[7];
+				}
+				if(isset($infoElements[8])){
+					$runner->farSPPrice = $infoElements[8];
+				}
+				if(isset($infoElements[9])){
+					$runner->nearSPPrice = $infoElements[9];
+				}
+				if(isset($infoElements[10])){
+					$runner->actualSPPrice = $infoElements[10];
+				}
 				$dataout->allRunnerData[]=$runner;
 			}
 		}else if(true === isset($datain->Result->marketData)){
@@ -254,28 +286,61 @@ class betfairDialogue {
 			$dataout->Result->marketDataItems = array();
 
 			foreach($marketItems as $marketItem){
-				$market = new stdClass;
+				//$market = new stdClass;
 				$marketElements = explode('~',$marketItem);
 				$market->marketId = $marketElements[0];
-				$market->marketName = $marketElements[1];
-				$market->marketType = $marketElements[2];
-				$market->marketStatus = $marketElements[3];
-				$market->eventDate = $marketElements[4];
-				$market->menuPath = $marketElements[5];
-				$market->eventHierarchy = $marketElements[6];
-				$market->betDelay = $marketElements[7];
-				$market->exchangeId = $marketElements[8];
-				$market->ISOCountryCode = $marketElements[9];
-				$market->lastRefresh = $marketElements[10];
-				$market->numberOfRunners = $marketElements[11];
-				$market->numberOfWinners = $marketElements[12];
-				$market->totalAmountMatched = $marketElements[13];
-				$market->BSPMarket = $marketElements[14];
-				$market->turningInPlay = $marketElements[15];
+				if(isset($marketElements[1])){
+					$market->marketName = $marketElements[1];
+				}
+				if(isset($marketElements[2])){
+					$market->marketType = $marketElements[2];
+				}
+				if(isset($marketElements[3])){
+					$market->marketStatus = $marketElements[3];
+				}
+				if(isset($marketElements[4])){
+					$market->eventDate = $marketElements[4];
+				}
+				if(isset($marketElements[5])){
+					$market->menuPath = $marketElements[5];
+				}
+				if(isset($marketElements[6])){
+					$market->eventHierarchy = $marketElements[6];
+				}
+				if(isset($marketElements[7])){
+					$market->betDelay = $marketElements[7];
+				}
+				if(isset($marketElements[8])){
+					$market->exchangeId = $marketElements[8];
+				}
+				if(isset($marketElements[9])){
+					$market->ISOCountryCode = $marketElements[9];
+				}
+				if(isset($marketElements[10])){
+					$market->lastRefresh = $marketElements[10];
+				}
+				if(isset($marketElements[11])){
+					$market->numberOfRunners = $marketElements[11];
+				}
+				if(isset($marketElements[12])){
+					$market->numberOfWinners = $marketElements[12];
+				}
+				if(isset($marketElements[13])){
+					$market->totalAmountMatched = $marketElements[13];
+				}
+				if(isset($marketElements[14])){
+					$market->BSPMarket = $marketElements[14];
+				}
+				if(isset($marketElements[15])){
+					$market->turningInPlay = $marketElements[15];
+				}
 				if(true == is_numeric($market->marketId)){
-					$dataout->Result->marketDataItems[]=$market;
+					//$dataout->Result->marketDataItems[]=$market;
 				}
 			}
+		}
+		if(isset($market)){
+			$dataout->Result->marketDataItems[]=$market;
 		}
 
 		return( $dataout );	

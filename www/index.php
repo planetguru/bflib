@@ -1,14 +1,13 @@
 <?php
-
 /* 
-* Include the controller class file, which includes
-*  __autoload instructions for the rest of the framework
+* Include the demo application controller class file, which includes
+*  __autoload instructions for the bflib framework
 */
 
-include ('../classes/betfairController.php');
+include ('../classes/betfairDemoRequestHandler.php');
 
-$controller = new betfairController( $_SERVER['REQUEST_URI'] );
+$demoController = new betfairDemoRequestHandler( $_SERVER['REQUEST_URI'] );
 
-$controller->run();
+$demoController->run();
 
 ?>

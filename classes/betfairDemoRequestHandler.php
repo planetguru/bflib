@@ -66,7 +66,7 @@ class betfairDemoRequestHandler {
 	*/
 	public function run(){
 		/* we will need the view at the end of this method */
-		$this->view = new bflibDemoView();
+		$this->view = new betfairDemoView();
 		$this->bflib = new betfairController();
 		$soapResult = array();
 	
@@ -93,7 +93,7 @@ class betfairDemoRequestHandler {
 		}
 		/* just hand over to the view class */	
 		$this->view->setSoapResponse($soapResult);
- 		$this->view->setContext( $this->context );
+ 		$this->view->setContext( $this->requestParts[3] );
 		$this->html = $this->view->render();
 		$this->display();
 	}
