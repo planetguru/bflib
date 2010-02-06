@@ -34,8 +34,7 @@ class betfairDemoView {
         * constructor
         *
         */
-        public function __construct(){ 
-        }
+        public function __construct(){ }
 
         /**
         * register the current context
@@ -60,48 +59,13 @@ class betfairDemoView {
         * 
         */
         public function render( ){
-                $returnHTML = '';
-		$chunk = <<<EOT
-			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
- 			"http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-   <title>BFlib - Betfair Library - Demo Application</title>
-   <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
-<link rel="stylesheet" type="text/css" href="http://
-EOT;
-                $returnHTML.=$chunk;
-                $returnHTML.=betfairConstants::HOSTNAME;
-                $chunk = <<<EOT
-/css/demo.css">
-</head>
-<body>
-<div id="doc3" class="yui-t6">
-   <div id="hd" role="banner"><h1>Bflib - Betfair Library Demo Application</h1></div>
-   <div id="bd" role="main">
-	<div id="yui-main">
-	<div class="yui-b"><div class="yui-gd">
-    <div class="yui-u first">
-EOT;
-		$returnHTML.=$chunk;
-                if( false === isset($this->soapResponse) ){
-                        $returnHTML.= 'This area will show raw exchange response output with each exchange request';
-                }else if(true === isset($this->soapResponse->Result->paymentCardItems)){
-                        $returnHTML.='I am not going to show you this bit :)';
-                }else{
-                        $returnHTML.=betfairHelper::returnVar($this->soapResponse);
-                }
-                $chunk = <<<EOT
-	    </div>
-    <div class="yui-u">
-EOT;
-		$returnHTML.=$chunk;
+		$chunk = '';
+		include('templates/header.tpl.php');
 		switch( $this->context ){
 			case 'getActiveEventTypes':
 			case 'getAllEventTypes':
 				foreach($this->soapResponse->Result->eventTypeItems->EventType as $eventType){
-					$chunk="<li><p>{$eventType->name} - <a href='http://".betfairConstants::HOSTNAME."/v1/getAllMarkets/{$eventType->id}'> get all markets </a> | <a href='http://".betfairConstants::HOSTNAME."/v1/getInPlayMarkets/{$eventType->id}'> get in-play markets </a></p></li>";
-					$returnHTML.=$chunk;
+					$displayUnit.="<li><p>{$eventType->name} - <a href='http://".betfairConstants::HOSTNAME."/v1/getAllMarkets/{$eventType->id}'> get all markets </a> | <a href='http://".betfairConstants::HOSTNAME."/v1/getInPlayMarkets/{$eventType->id}'> get in-play markets </a></p></li>";
 				}
 	 		break;
 
@@ -110,12 +74,11 @@ EOT;
 				array_shift($markets);
 				foreach($markets as $market){
 					$marketData = explode('~',$market);
-					$html="<li> {$marketData[1]}
+					$displayUnit.="<li> {$marketData[1]}
 						<a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>get prices compressed</a> |
 						<a href='http://".betfairConstants::HOSTNAME."/v1/getMarket/{$marketData[0]}'>get market</a> |
 						<a href='http://".betfairConstants::HOSTNAME."/v1/getBFMarketPrices/{$marketData[0]}'>get BF market prices</a> |
 						</li>";
-						$returnHTML.= $html;
 				}
 				break;
 
@@ -124,66 +87,44 @@ EOT;
 				array_shift($markets);
 				foreach($markets as $market){
 					$marketData = explode('~',$market);
-					$h="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>{$marketData[1]}</a></li>";
-					$returnHTML.= $h;
+					$displayUnit.="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>{$marketData[1]}</a></li>";
 				}
 				break;
 
 			case 'getMarket':
-	 			$returnHTML.=betfairHelper::returnVar($this->soapResponse);
+	 			$displayUnit=betfairHelper::returnVar($this->soapResponse);
 				break;
 
 			case 'getCompleteMarketPricesCompressed':
-				$returnHTML.=betfairHelper::returnVar($this->soapResponse);
+				$displayUnit=betfairHelper::returnVar($this->soapResponse);
 				break;
 
 			case 'getBFMarketPrices':
-				$returnHTML.='<table>';
+				$displayUnit='<table>';
 				foreach($this->soapResponse->allRunnerData as &$runner){
-					$returnHTML.='<tr>';
+					$displayUnit.='<tr>';
 						foreach($runner->prices as $priceDetails){
-						$chunk='<p>odds: '.$priceDetails->odds.'- back: '.$priceDetails->backAmountAvailable.'- lay: '.$priceDetails->layAmountAvailable;
-						$returnHTML.=$chunk.'</p>';
+						$displayUnit.='<p>odds:'.$priceDetails->odds.'- back: '.$priceDetails->backAmountAvailable.'- lay: '.$priceDetails->layAmountAvailable;
+						$displayUnit.='</p>';
 					}
-					$returnHTML.='</tr>';
+					$displayUnit.='</tr>';
 				}
-				$returnHTML.='</table>';
+				$displayUnit.='</table>';
 				break;	
 								
 			default:
-				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getActiveEventTypes/'>get active event types</a></p>";
-				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllEventTypes/'>get all event types</a></p>";
-				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAccountFunds/'>get account funds</a></p>";
-				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllCurrencies/'>get all currencies</a></p>";
-				$returnHTML.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getPaymentCard/'>get payment card</a></p>";
+				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getActiveEventTypes/'>get active event types</a></p>";
+				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllEventTypes/'>get all event types</a></p>";
+				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAccountFunds/'>get account funds</a></p>";
+				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllCurrencies/'>get all currencies</a></p>";
+				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getPaymentCard/'>get payment card</a></p>";
 				break;
 		}
-		$chunk = <<<EOT
+		include('templates/body.tpl.php');
+		$chunk .= <<<EOT
 	    </div>
-</div>
-</div>
-	</div>
-	<div class="yui-b">
-		<div class="counit">
-<a href="http://www.anrdoezrs.net/gj117vpyvpxCGKLLEHJCEDJMDJFL" target="_top" onmouseover="window.status='http://www.totesport.com/asset_tracker?action=go_asset&new=1&aff_id=115&asset_id=118';return true;" onmouseout="window.status=' ';return true;">
-<img src="http://www.awltovhc.com/46108m-3sywHLPQQJMOHJIORIOKQ" alt="Bet now with totesport" border="0"/></a>
-		</div>
-		<div class="counit">
-<a href="http://www.dpbolvw.net/hj115hz74z6MQUVVORTMONPVOTOW" target="_top" onmouseover="window.status='http://www.betfair.com';return true;" onmouseout="window.status=' ';return true;">
-<img src="http://www.awltovhc.com/qn72snrflj48CDD69B4657D6B6E" alt="130x100_Seasonal" border="0"/></a>
-		</div>
-		<div class="counit">
-		<a href="http://www.bfbotmanager.com/cgi-bin/affiliate.pl?affiliate_id=30" target="_blank"><img style="border: 0px;" src="http://www.bfbotmanager.com/adverts/bf_bot_140x91.gif"></a>
-		</div>
-	</div>
-	</div>
-   <div id="ft" role="contentinfo"><p>Back to Backingline, Befair.com, BDP</p></div>
-</div>
-</body>
-</html>
 EOT;
-		$returnHTML.=$chunk;
-		return($returnHTML);
+return($chunk);
 	}
 }
 ?>

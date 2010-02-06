@@ -21,7 +21,9 @@ Introduction
 --------------
 
 The best way to get started with this library is to install the demo and see it 
-working first.
+working first. 
+
+The demo application can also be viewed at http://www.backingline.com/betfair-api.php
 
 To get started, extract the contents of the bflib archive into your document root.
 
