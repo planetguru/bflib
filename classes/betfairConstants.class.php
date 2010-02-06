@@ -46,7 +46,7 @@ class betfairConstants {
 	*
 	* @todo: create a separate configuration value to represent the base path
 	*/
-	//CONST HOSTNAME = '';
+	CONST HOSTNAME = '';
 
 	/* examples */
 	/* would require modification to splitRequestURI to reduce array indexes by 1 */
@@ -54,7 +54,7 @@ class betfairConstants {
 
 	/* will require a change to .htaccess if served under somthing other than 'bflib' */
 	//CONST HOSTNAME = 'www.backingline.com/bflib';
-        CONST HOSTNAME = 'backingline/bflib';
+        //CONST HOSTNAME = 'backingline/bflib';
 
 	/**
 	* bdp developer credentials. You should change the USERNAME and
@@ -62,10 +62,10 @@ class betfairConstants {
 	* Remember that your account will need to be active, with recent transactions and
 	* cleared funds in order for the SOAP APIs to allow you to authenticate
 	*/
-	const USERNAME     = 'planetguru';
-	const PASSWORD     = 'ma5tin33';
-	const PRODUCTID    = 0;   // 82 for non-vendor, else 0.
-	const VENDORID     = 1242;  // v1242
+	const USERNAME     = '';
+	const PASSWORD     = '';
+	const PRODUCTID    = 82;   // 82 for non-vendor, else 0.
+	const VENDORID     = 0;  // v1242
 	const LOCATIONID   = 0;
 	const IPADDRESS    = 0;
 
