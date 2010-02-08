@@ -6,7 +6,7 @@ $chunk.=<<<EOT
 <head>
    <title>BFlib - Betfair Library - Demo Application</title>
    <link rel="stylesheet" href="http://yui.yahooapis.com/2.7.0/build/reset-fonts-grids/reset-fonts-grids.css" type="text/css">
-<link rel="stylesheet" type="text/css" href="http://www.backingline.com/bflib/css/demo.css">
+<link rel="stylesheet" type="text/css" href="http://{$hostname}/css/demo.css">
 </head>
 <body>
 <div id="doc3" class="yui-t6">

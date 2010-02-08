@@ -158,17 +158,15 @@ class betfairController {
 				$soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
 				break;
 
-			case 'GetEvents':	
-				//$soapMessage['request']['eventParentId']=$list[3];
+			case 'getEvents':	
 				$soapMessage['request']['eventParentId']=$id;
 				break;
 
-			case 'GetEvent':
-				//$soapMessage['request']['eventParentId']=$list[3];
+			case 'getEvent':
 				$soapMessage['request']['eventParentId']=$id;
 				break;
 
-			case 'GetMarketPrices';
+			case 'getMarketPrices';
 				$soapMessage['request']['marketId'] = $id;
 				$soapMessage['request']['currencyCode'] = 'GBP';
 				break;

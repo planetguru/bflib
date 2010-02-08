@@ -39,22 +39,7 @@ class betfairConstants {
         CONST LOGGER_MODE = false;
         CONST CURRENCY_CODE = 'GBP';
 
-	/**
-	* Hostname should be changed to match the dns hostname 
-	* e.g. www.backingline.com, Note: if you are NOT keeping 'bflib' in your path, or 'www',
-	* you will have to decrement the positional values in your controller by one.
-	*
-	* @todo: create a separate configuration value to represent the base path
-	*/
-	CONST HOSTNAME = '';
-
-	/* examples */
-	/* would require modification to splitRequestURI to reduce array indexes by 1 */
-        // CONST HOSTNAME = 'www.backingline.com';  
-
-	/* will require a change to .htaccess if served under somthing other than 'bflib' */
-	//CONST HOSTNAME = 'www.backingline.com/bflib';
-        //CONST HOSTNAME = 'backingline/bflib';
+	/* HOSTNAME has been moved into the application config */
 
 	/**
 	* bdp developer credentials. You should change the USERNAME and
@@ -68,6 +53,12 @@ class betfairConstants {
 	const VENDORID     = 0;  // v1242
 	const LOCATIONID   = 0;
 	const IPADDRESS    = 0;
+
+	/**
+	* Error codes
+	*
+	*/
+	const ERROR_OK = 'OK';
 
 	public function __construct(){}
 }

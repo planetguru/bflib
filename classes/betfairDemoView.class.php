@@ -60,14 +60,45 @@ class betfairDemoView {
         */
         public function render( ){
 		$chunk = '';
-		include('templates/header.tpl.php');
+		$displayUnit='';
+		$hostname = betfairDemoConstants::HOSTNAME;
 		switch( $this->context ){
-			case 'getActiveEventTypes':
 			case 'getAllEventTypes':
 				foreach($this->soapResponse->Result->eventTypeItems->EventType as $eventType){
-					$displayUnit.="<li><p>{$eventType->name} - <a href='http://".betfairConstants::HOSTNAME."/v1/getAllMarkets/{$eventType->id}'> get all markets </a> | <a href='http://".betfairConstants::HOSTNAME."/v1/getInPlayMarkets/{$eventType->id}'> get in-play markets </a></p></li>";
+					$displayUnit.="<li><p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getEvents/{$eventType->id}'>{$eventType->name}</a></li>";
 				}
-	 		break;
+		 		break;
+
+                        case 'getEvents':
+                                /* either this is another list of event nodes, or it is a market summary */
+                                if(isset($this->soapResponse->Result->marketItems->MarketSummary)){
+					if(is_array($this->soapResponse->Result->marketItems->MarketSummary)){
+						foreach($this->soapResponse->Result->marketItems->MarketSummary as $market){
+							$displayUnit.="<li><p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getMarket/{$market->marketId}'>{$market->marketName}</a></p></li>";
+						}
+					}else{
+						$market = $this->soapResponse->Result->marketItems->MarketSummary;
+						$displayUnit.="<li><p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getMarket/{$market->marketId}'>{$market->marketName}</a></p></li>";
+					}
+                                }if(isset($this->soapResponse->Result->eventItems->BFEvent)){
+					/* 
+					* if it's an array, there are more than one events, otherwise there is just one 
+					* this is somewhat broken in that the datatype switches from an object to an object array depending on 
+					* the number of items.  Probably it would be better if BF just served up an array with a
+					* single object in it in cases where there is only one eventItem under an eventParent 
+					*
+					*/
+					if(is_array($this->soapResponse->Result->eventItems->BFEvent)){
+						foreach($this->soapResponse->Result->eventItems->BFEvent as $event){
+							$displayUnit.="<li><p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getEvents/{$event->eventId}'>{$event->eventName}</a></p></li>";
+						}
+					}else{
+						$event = $this->soapResponse->Result->eventItems->BFEvent;
+						$displayUnit.="<li><p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getEvents/{$event->eventId}'>{$event->eventName}</a></p></li>";
+					}
+                                }
+                                break;
+
 
 			case 'getAllMarkets':
 				$markets = explode(":",$this->soapResponse->Result->marketData);
@@ -75,9 +106,9 @@ class betfairDemoView {
 				foreach($markets as $market){
 					$marketData = explode('~',$market);
 					$displayUnit.="<li> {$marketData[1]}
-						<a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>get prices compressed</a> |
-						<a href='http://".betfairConstants::HOSTNAME."/v1/getMarket/{$marketData[0]}'>get market</a> |
-						<a href='http://".betfairConstants::HOSTNAME."/v1/getBFMarketPrices/{$marketData[0]}'>get BF market prices</a> |
+						<a href='http://".betfairDemoConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>get compressed</a> |
+						<a href='http://".betfairDemoConstants::HOSTNAME."/v1/getMarketPriceCompressed/{$marketData[0]}'>get market</a> |
+						<a href='http://".betfairDemoConstants::HOSTNAME."/v1/getBFMarketPrices/{$marketData[0]}'>get BF market prices</a> |
 						</li>";
 				}
 				break;
@@ -87,12 +118,17 @@ class betfairDemoView {
 				array_shift($markets);
 				foreach($markets as $market){
 					$marketData = explode('~',$market);
-					$displayUnit.="<li><a href='http://".betfairConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>{$marketData[1]}</a></li>";
+					$displayUnit.="<li><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getCompleteMarketPricesCompressed/{$marketData[0]}'>{$marketData[1]}</a></li>";
 				}
 				break;
 
 			case 'getMarket':
-	 			$displayUnit=betfairHelper::returnVar($this->soapResponse);
+				if(betfairConstants::ERROR_OK === $this->soapResponse->Result->header->errorCode){
+					$marketDescription = $this->soapResponse->Result->market->marketDescription;
+					include('templates/marketData.tpl.php');
+					$displayUnit=betfairHelper::returnVar($this->soapResponse);
+				}else{
+				}
 				break;
 
 			case 'getCompleteMarketPricesCompressed':
@@ -113,13 +149,13 @@ class betfairDemoView {
 				break;	
 								
 			default:
-				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getActiveEventTypes/'>get active event types</a></p>";
-				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllEventTypes/'>get all event types</a></p>";
-				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAccountFunds/'>get account funds</a></p>";
-				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getAllCurrencies/'>get all currencies</a></p>";
-				$displayUnit.="<p><a href='http://".betfairConstants::HOSTNAME."/v1/getPaymentCard/'>get payment card</a></p>";
+				$displayUnit.="<p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getAllEventTypes/'>get all event types</a></p>";
+				$displayUnit.="<p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getAccountFunds/'>get account funds</a></p>";
+				$displayUnit.="<p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getAllCurrencies/'>get all currencies</a></p>";
+				$displayUnit.="<p><a href='http://".betfairDemoConstants::HOSTNAME."/v1/getPaymentCard/'>get payment card</a></p>";
 				break;
 		}
+		include('templates/header.tpl.php');
 		include('templates/body.tpl.php');
 		$chunk .= <<<EOT
 	    </div>
