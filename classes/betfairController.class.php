@@ -56,7 +56,6 @@ class betfairController {
 	public $data = array();
 	public $requestParts = array();
 	public $itemId;
-	private $html;
 
 	/**
 	* construct controller object
