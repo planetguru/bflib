@@ -61,7 +61,7 @@ Please note that if you are attempting to view the demo app straight off your do
 will need to make two changes:
 
 1) Modify the 'splitRequestParts()' method, decrementing the index in requestParts[<index>] by one
-2) Remove 'bfapi' from the following line in your .htaccess:
+2) Remove 'bflib' from the following line in your .htaccess:
 
 	RewriteRule ^(.*)$ /bflib/index.php [L]
 
