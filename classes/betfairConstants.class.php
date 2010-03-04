@@ -59,6 +59,7 @@ class betfairConstants {
 	*
 	*/
 	const ERROR_OK = 'OK';
+	const ERROR_EVENT_CLOSED = 'EVENT_CLOSED';
 
 	public function __construct(){}
 }
