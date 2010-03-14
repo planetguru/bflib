@@ -30,19 +30,6 @@
 */
 
 /**
-* Define autoload classpath and require it in.
-* Now removed, since autoloading should probably be governed by the calling application
-* @param $class The class to be loaded
-*
-function __autoload( $class ){
-	$classpath = '../classes/'.$class.'.class.php';
-	if (file_exists( $classpath )){
-		require_once($classpath);
-	}
-}
-*/
-
-/**
 * The betfairController class loosely acts as an application controller in MVC-speak. This class handles
 * interaction between the betfairDialogue and the betfairView. The controller is also responsible for
 * discerning context from the parent URI and eventually serving the rendered view output to the user
@@ -56,6 +43,7 @@ class betfairController {
 	public $data = array();
 	public $requestParts = array();
 	public $itemId;
+	public $soapMessage;
 
 	/**
 	* construct controller object
@@ -65,6 +53,8 @@ class betfairController {
 		/** first login - currently on every call with forced 'login' context **/
 		$this->prepareDialogue();
 		$loginresult = $this->login();
+		$this->soapMessage = array();
+		$this->soapMessage['request']=array();
 	}
 
 	/**
@@ -114,7 +104,20 @@ class betfairController {
 		return($soapResult);
 	}
 
-	/** 
+	/**
+	* Add an element to the $this->soapMessage['request'] array.  This will most likely be called
+	* from outside the framework and passed straight through. This is a useful way of adding
+	* values beyond just the 'itemId', which would be determined at runtime rather than through
+	* configuration
+	*
+	* @param $key the key name of the item to add to the request
+	* @param $value the value for this key
+	*
+	public function addRequestElement($key, $value){
+
+	}
+	*/
+/** 
 	* Based on the context of this request and the 'id' pulled from the request URI,
 	* Set up some request parameters to be passed in the soap message by the dialogue object
 	*
@@ -126,54 +129,52 @@ class betfairController {
 	* @todo move this into betfairDialogue as prepareRequestData; rename prepareData to prepareResponseData
 	*/
 	public function constructRequestData($context, $id){
-		$soapMessage = array();
-		$soapMessage['request']=array();
 
 		/* text the context and set parameters as necessary */
 		switch($context){
 			case 'login':
-				$soapMessage['request']['username']=betfairConstants::USERNAME;
-				$soapMessage['request']['password']=betfairConstants::PASSWORD;
-				$soapMessage['request']['productId']=betfairConstants::PRODUCTID;
-				$soapMessage['request']['vendorSoftwareId']=betfairConstants::VENDORID;
-				$soapMessage['request']['locationId']=betfairConstants::LOCATIONID;
-				$soapMessage['request']['ipAddress']=betfairConstants::IPADDRESS;
+				$this->soapMessage['request']['username']=betfairConstants::USERNAME;
+				$this->soapMessage['request']['password']=betfairConstants::PASSWORD;
+				$this->soapMessage['request']['productId']=betfairConstants::PRODUCTID;
+				$this->soapMessage['request']['vendorSoftwareId']=betfairConstants::VENDORID;
+				$this->soapMessage['request']['locationId']=betfairConstants::LOCATIONID;
+				$this->soapMessage['request']['ipAddress']=betfairConstants::IPADDRESS;
 				break;
 
 			case 'getAllMarkets':
 				if( true === is_numeric( $id )){
-					$soapMessage['request']['eventTypeIds'][] = $id;
+					$this->soapMessage['request']['eventTypeIds'][] = $id;
 				}
 				break;
 		
 			case 'getMarket':
-				$soapMessage['request']['marketId'] = $id;
-				$soapMessage['request']['includeCouponLinks'] = false;
-				$soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
+				$this->soapMessage['request']['marketId'] = $id;
+				$this->soapMessage['request']['includeCouponLinks'] = false;
+				$this->soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
 				break;
 
 			case 'getCompleteMarketPricesCompressed':
-				$soapMessage['request']['marketId'] = $id;
-				$soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
+				$this->soapMessage['request']['marketId'] = $id;
+				$this->soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
 				break;
 
 			case 'getEvents':	
-				$soapMessage['request']['eventParentId']=$id;
+				$this->soapMessage['request']['eventParentId']=$id;
 				break;
 
 			case 'getEvent':
-				$soapMessage['request']['eventParentId']=$id;
+				$this->soapMessage['request']['eventParentId']=$id;
 				break;
 
 			case 'getMarketPrices';
-				$soapMessage['request']['marketId'] = $id;
-				$soapMessage['request']['currencyCode'] = 'GBP';
+				$this->soapMessage['request']['marketId'] = $id;
+				$this->soapMessage['request']['currencyCode'] = 'GBP';
 				break;
 	
 		}
 	
-		$soapMessage['request']['header']=array('clientStamp' => 0, 'sessionToken' => $this->dialogue->getSessionToken() );
-		return($soapMessage);
+		$this->soapMessage['request']['header']=array('clientStamp' => 0, 'sessionToken' => $this->dialogue->getSessionToken() );
+		return($this->soapMessage);
 	}
 }
 ?>
