@@ -113,11 +113,13 @@ class betfairController {
 	* @param $key the key name of the item to add to the request
 	* @param $value the value for this key
 	*
-	public function addRequestElement($key, $value){
-
-	}
 	*/
-/** 
+	public function addRequestElement($key, $value){
+		$this->soapMessage['request'][$key] = $value;
+	}
+
+
+	/** 
 	* Based on the context of this request and the 'id' pulled from the request URI,
 	* Set up some request parameters to be passed in the soap message by the dialogue object
 	*
@@ -129,7 +131,6 @@ class betfairController {
 	* @todo move this into betfairDialogue as prepareRequestData; rename prepareData to prepareResponseData
 	*/
 	public function constructRequestData($context, $id){
-
 		/* text the context and set parameters as necessary */
 		switch($context){
 			case 'login':
@@ -168,9 +169,11 @@ class betfairController {
 
 			case 'getMarketPrices';
 				$this->soapMessage['request']['marketId'] = $id;
-				$this->soapMessage['request']['currencyCode'] = 'GBP';
+				$this->soapMessage['request']['currencyCode'] = betfairConstants::CURRENCY_CODE;
 				break;
-	
+
+			default:
+				break;	
 		}
 	
 		$this->soapMessage['request']['header']=array('clientStamp' => 0, 'sessionToken' => $this->dialogue->getSessionToken() );
