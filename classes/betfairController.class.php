@@ -115,7 +115,12 @@ class betfairController {
 	*
 	*/
 	public function addRequestElement($key, $value){
-		$this->soapMessage['request'][$key] = $value;
+		if(true === is_array($value)){
+			$this->soapMessage['request'][$key] = array();
+			$this->soapMessage['request'][$key] = value;
+		}else{
+			$this->soapMessage['request'][$key] = $value;
+		}
 	}
 
 
