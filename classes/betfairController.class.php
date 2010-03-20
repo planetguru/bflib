@@ -68,6 +68,20 @@ class betfairController {
 	}
 
 	/**
+	* reset the controller between requests to remove legacy request elements
+	*
+	* @param none
+	* @return none
+	*/
+	public function reset(){
+		unset($this->dialogue);
+		$this->prepareDialogue();
+		$loginresult = $this->login();
+		$this->soapMessage = array();
+		$this->soapMessage['request']=array();
+	}
+
+	/**
 	* Instantiate a betfairdialogue object, request function lists from the service WSDLs,
 	* log in and pass a request through the client, according to the current request 'context'
 	* Then hand over to the view class to render any output/soapresponse
