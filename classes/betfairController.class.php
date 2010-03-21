@@ -41,7 +41,6 @@
 class betfairController {
 	public $context = '';
 	public $data = array();
-	public $requestParts = array();
 	public $itemId;
 	public $soapMessage;
 
