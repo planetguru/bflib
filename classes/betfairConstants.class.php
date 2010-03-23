@@ -33,7 +33,7 @@ class betfairConstants {
 
         /* enable debug mode for full dumps of soap error responses. Use with extreme caution */
         /* as this can result in exposing exchange login credentials */
-        CONST DEBUG_MODE = false;
+        CONST DEBUG_MODE = true;
 
         /*  not yet implemented, but enable to turn on verbose logging */
         CONST LOGGER_MODE = false;
@@ -60,6 +60,22 @@ class betfairConstants {
 	*/
 	const ERROR_OK = 'OK';
 	const ERROR_EVENT_CLOSED = 'EVENT_CLOSED';
+
+	/**
+	* Bet related constants
+	* 
+	*/
+	const BACK_BET_TYPE = 'B';
+	const LAY_BET_TYPE = 'L';
+
+	const BET_CATEGORY_TYPE_NONE = 'NONE';
+	const BET_CATEGORY_TYPE_NORMAL = 'E';
+	const BET_CATEGORY_TYPE_MARKETONCLOSE = 'M';
+	const BET_CATEGORY_TYPE_LIMITONCLOSE = 'L';
+
+	const BET_PERSISTENCE_NORMAL = 'NONE';
+	const BET_PERSISTENCE_SP = 'SP';
+	const BET_PERSISTENCE_IP = 'IP';
 
 	public function __construct(){}
 }
