@@ -43,12 +43,15 @@ following PHP compliation works for me (with the supporting libs in place, of co
 MVC
 ----
 
-The bflib code is based on the MVC pattern, with the betfairDialogue class serving as the
+The bflib code is loosely based on the MVC pattern, with the betfairDialogue class serving as the
 model. This is the class which you are least likely to modify, and if you do modify it, 
 it's the class you will most likely want to commit updates/patches to on github. 
 
 The 'view' is completely domain-specific. It is very likely that you will modify the view to get it 
 to construct completely different html fragments, or perhaps XML/JSON as output.  
+
+If you are writing a bot to run from the command line (with no web front-end), then you might not 
+even use the 'view' component and your handling of request elements will probably be simpler too.
 
 The controller behaves as glue between the whole lot, and demonstrates how you can envoke dialogue and view
 objects and pass data between them.  
