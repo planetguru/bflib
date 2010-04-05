@@ -39,21 +39,6 @@ class betfairConstants {
         CONST LOGGER_MODE = false;
         CONST CURRENCY_CODE = 'GBP';
 
-	/* HOSTNAME has been moved into the application config */
-
-	/**
-	* bdp developer credentials. You should change the USERNAME and
-	* PASSWORD to match your own username and password on betfair.
-	* Remember that your account will need to be active, with recent transactions and
-	* cleared funds in order for the SOAP APIs to allow you to authenticate
-	*/
-	const USERNAME     = '';
-	const PASSWORD     = '';
-	const PRODUCTID    = 82;   // 82 for non-vendor, else 0.
-	const VENDORID     = 0;  // v1242
-	const LOCATIONID   = 0;
-	const IPADDRESS    = 0;
-
 	/**
 	* Error codes
 	*

@@ -152,12 +152,12 @@ class betfairController {
 		/* text the context and set parameters as necessary */
 		switch($context){
 			case 'login':
-				$this->soapMessage['request']['username']=betfairConstants::USERNAME;
-				$this->soapMessage['request']['password']=betfairConstants::PASSWORD;
-				$this->soapMessage['request']['productId']=betfairConstants::PRODUCTID;
-				$this->soapMessage['request']['vendorSoftwareId']=betfairConstants::VENDORID;
-				$this->soapMessage['request']['locationId']=betfairConstants::LOCATIONID;
-				$this->soapMessage['request']['ipAddress']=betfairConstants::IPADDRESS;
+				$this->soapMessage['request']['username']=vendorConstants::USERNAME;
+				$this->soapMessage['request']['password']=vendorConstants::PASSWORD;
+				$this->soapMessage['request']['productId']=vendorConstants::PRODUCTID;
+				$this->soapMessage['request']['vendorSoftwareId']=vendorConstants::VENDORID;
+				$this->soapMessage['request']['locationId']=vendorConstants::LOCATIONID;
+				$this->soapMessage['request']['ipAddress']=vendorConstants::IPADDRESS;
 				break;
 
 			case 'getAllMarkets':
