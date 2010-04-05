@@ -27,10 +27,13 @@ The demo application can also be viewed at http://www.backingline.com/betfair-ap
 
 To get started, extract the contents of the bflib archive into your document root.
 
-Next, you should edit the classes/betfairConstants.class.php  file.  In here, you will
-need to specify your Betfair username and password and the Apache virtualhost which you 
-will be running the demo under.  Don't forget to include the .htaccess file in your 'www'
-folder.
+Next, you should edit the classes/vendorConstants.class.php file. In here you need to 
+specify your Betfair username and password.
+
+Then you should edit the  classes/betfairConstants.class.php  file.  In here, you will
+need to specify the Apache virtualhost which you will be running the demo under.
+
+Don't forget to include the .htaccess file in your 'www' folder.
 
 You should also be sure to have PHP compiled with soap and ssl support. I also recommend
 using the latest version of PHP, which fixes bugs in the stream wrappers API, which can
