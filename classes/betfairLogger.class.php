@@ -28,7 +28,7 @@ class betfairLogger {
         private static $instance;
 
         private function __construct(){
-                $this->logHandle = fopen('/tmp/fairgroundlog','a');
+                $this->logHandle = fopen('/tmp/betfair-api-log','a');
         }
 
         public static function getInstance(){

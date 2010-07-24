@@ -43,15 +43,22 @@ class betfairController {
 	public $data = array();
 	public $itemId;
 	public $soapMessage;
+	private $logger;
 
 	/**
 	* construct controller object
 	*
 	*/
         public function __construct( ){ 
+		/* initialize a logger object */
+		$this->logger = betfairLogger::getInstance();
+
 		/** first login - currently on every call with forced 'login' context **/
 		$this->prepareDialogue();
 		$loginresult = $this->login();
+		$logmessage = print_r($loginresult->Result->errorCode, true);
+		$this->logger->log( $logmessage );
+	
 		$this->soapMessage = array();
 		$this->soapMessage['request']=array();
 	}
@@ -148,7 +155,7 @@ class betfairController {
 	*
 	* @todo move this into betfairDialogue as prepareRequestData; rename prepareData to prepareResponseData
 	*/
-	public function constructRequestData($context, $id){
+	public function constructRequestData($context, $id = ''){
 		/* text the context and set parameters as necessary */
 		switch($context){
 			case 'login':

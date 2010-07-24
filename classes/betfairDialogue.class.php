@@ -32,14 +32,16 @@ class betfairDialogue {
 	private $globalClient;
 	private $exchangeClient;
 	private $activeClient;
+	private $soapOptions;
+	private $sessionToken = '';
+        private $data;
+	private $logger;
+
+	private static $instance;
+
 	public $globalMethods = array();
 	public $exchangeMethods = array();
-	private $soapOptions;
-	private static $instance;
 	public $isConnected = false;
-	private $sessionToken = '';
-
-        private $data;
         public $context = '';
 
         /**
@@ -52,6 +54,9 @@ class betfairDialogue {
                         $c = __CLASS__;
                         self::$instance = new $c;
                 }
+	
+		/* initialize the logger for this instance */
+		$logger = betfairLogger::getInstance();
                 return self::$instance;
         }
 
