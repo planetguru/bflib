@@ -26,8 +26,7 @@
 class vendorConstants {
 
 	/**
-	* bdp developer credentials. You should change the USERNAME and
-	* PASSWORD to match your own username and password on betfair.
+	* Change the USERNAME and PASSWORD to match your own username and password on betfair.
 	* Remember that your account will need to be active, with recent transactions and
 	* cleared funds in order for the SOAP APIs to allow you to authenticate
 	*
@@ -38,6 +37,12 @@ class vendorConstants {
 	const VENDORID     = 0;
 	const LOCATIONID   = 0;
 	const IPADDRESS    = 0;
+
+	/**
+	* some settings which are more specific to the vendor/implementation than they are to the bflib core
+	*
+	*/
+	const LOGFILE		='/tmp/betfair-api-log';
 
 	public function __construct(){}
 }
