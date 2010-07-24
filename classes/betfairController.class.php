@@ -16,27 +16,16 @@
 
     You should have received a copy of the GNU General Public License
     along with Bflib.  If not, see <http://www.gnu.org/licenses/>.
+
+    @author Chris Lacy-Hulbert chris@spiration.co.uk
 */
 
-/**
-* Betfair soap client library class. 
-*
-* Provides controller methods for handling betfair API sessions and envoking 'views'.
-* This is likely to alter per-implementation. This version hangs heavily on the URL
-* and is not flexible to different URL formats. 
-*
-* @author Chris Lacy-Hulbert chris@spiration.co.uk
-*
-*/
 
 /**
 * The betfairController class loosely acts as an application controller in MVC-speak. This class handles
-* interaction between the betfairDialogue and the betfairView. The controller is also responsible for
-* discerning context from the parent URI and eventually serving the rendered view output to the user
+* interaction between the betfairDialogue and the calling view/application. The controller is also 
+* responsible for discerning context and eventually serving the rendered view output to the user
 *
-* @TODO - current thinking is to move this out of the framework, since it's really demo-specific (with
-* all the URL handling stuff. Perhaps make this the betfairDemoRequestHandler, then package the bit which
-* deals with structuring request data and manipulating the model etc as the betfairController 
 */
 class betfairController {
 	public $context = '';
@@ -74,20 +63,6 @@ class betfairController {
 	}
 
 	/**
-	* reset the controller between requests to remove legacy request elements
-	*
-	* @param none
-	* @return none
-	*/
-	public function reset(){
-		unset($this->dialogue);
-		$this->prepareDialogue();
-		$loginresult = $this->login();
-		$this->soapMessage = array();
-		$this->soapMessage['request']=array();
-	}
-
-	/**
 	* Instantiate a betfairdialogue object, request function lists from the service WSDLs,
 	* log in and pass a request through the client, according to the current request 'context'
 	* Then hand over to the view class to render any output/soapresponse
@@ -96,18 +71,13 @@ class betfairController {
 	public function run(){
 		/* if there is no context, there is nothing to run */
 		if( false === empty( $this->context )){
-			$reqdata = $this->constructRequestData($this->context, $this->itemId);
-
-			/** then call the required context if set **/ 
-			if(!empty($this->context)){
-				$this->data = $reqdata;
-				$this->dialogue->setContext($this->context);
-				$this->dialogue->setData($this->data);
-				$soapResult = $this->dialogue->execute();
-				$soapResult = $this->dialogue->prepareResponseData($soapResult);
-			}
+			$this->data = $this->constructRequestData($this->context, $this->itemId);
+			$this->dialogue->setContext($this->context);
+			$this->dialogue->setData($this->data);
+			$soapResult = $this->dialogue->execute();
+			$soapResult = $this->dialogue->prepareResponseData($soapResult);
 		}
-		if(isset($soapResult) && false === empty($soapResult)){
+		if(true === isset($soapResult) && false === empty($soapResult)){
 			return($soapResult);
 		}
 	}
