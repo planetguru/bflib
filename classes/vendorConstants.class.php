@@ -43,6 +43,7 @@ class vendorConstants {
 	*
 	*/
 	const LOGFILE		='/tmp/betfair-api-log';
+	const CACHEFILE		='/tmp/bflib-0001.cache';
 
 	public function __construct(){}
 }
