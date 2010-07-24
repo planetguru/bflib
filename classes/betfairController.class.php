@@ -97,6 +97,7 @@ class betfairController {
 	* @return soapResult
 	*/
 	public function login(){
+		$this->setContext('login');
 		$this->dialogue->setContext('login');
 		$this->dialogue->setData($this->constructRequestData('login', 0));  
 		$soapResult = $this->dialogue->execute();
