@@ -28,11 +28,12 @@
 *
 */
 class betfairController {
-	public $context = '';
+	private $context = '';
+	private $logger;
+
 	public $data = array();
 	public $itemId;
 	public $soapMessage;
-	private $logger;
 
 	/**
 	* construct controller object
@@ -50,6 +51,14 @@ class betfairController {
 	
 		$this->soapMessage = array();
 		$this->soapMessage['request']=array();
+	}
+
+	/**
+	* set the context ready to pass into the dialogue object
+	*
+	*/
+	public function setContext( $contextString ){
+		$this->context = $contextString;
 	}
 
 	/**
@@ -118,16 +127,15 @@ class betfairController {
 	* Based on the context of this request and the 'id' pulled from the request URI,
 	* Set up some request parameters to be passed in the soap message by the dialogue object
 	*
-	* @param $context the context, or 'verb' of the current request
 	* @param $id the id on which the method will be run. Usually an integer, but could be an array of ints
 	* @param $url passed in for convenience in cases where the verb and target id are insufficient
 	* @return the soapMessage array with fully constructed request and session data
 	*
 	* @todo move this into betfairDialogue as prepareRequestData; rename prepareData to prepareResponseData
 	*/
-	public function constructRequestData($context, $id = ''){
+	public function constructRequestData( $id = ''){
 		/* text the context and set parameters as necessary */
-		switch($context){
+		switch($this->context){
 			case 'login':
 				$this->soapMessage['request']['username']=vendorConstants::USERNAME;
 				$this->soapMessage['request']['password']=vendorConstants::PASSWORD;
