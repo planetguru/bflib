@@ -32,7 +32,7 @@ class betfairController {
 	private $logger;
 
 	public $data = array();
-	public $itemId;
+	private $itemId;
 	public $soapMessage;
 
 	/**
@@ -59,6 +59,14 @@ class betfairController {
 	*/
 	public function setContext( $contextString ){
 		$this->context = $contextString;
+	}
+
+	/**
+	* set the itemid ready to pass into the dialogue object
+	*
+	*/
+	public function setItemId( $item ){
+		$this->itemId = $item;
 	}
 
 	/**
@@ -134,7 +142,7 @@ class betfairController {
 	*
 	* @todo move this into betfairDialogue as prepareRequestData; rename prepareData to prepareResponseData
 	*/
-	public function constructRequestData( $id = ''){
+	public function constructRequestData( $context, $id = ''){
 		/* text the context and set parameters as necessary */
 		switch($this->context){
 			case 'login':
