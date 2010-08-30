@@ -96,6 +96,8 @@ class betfairDialogue {
                 return($this->data);
         }
 
+
+
 	/**
 	* Instantiate a Soap client object and retrieve WSDL for each exchange
 	*
@@ -175,6 +177,21 @@ class betfairDialogue {
 		return( $res );
 	}
 
+	/*
+	* Check to see if method exists in either of the wsdls 
+	*	
+	* @param $string context 
+	* @return bool
+	*/
+	public function hasContext($context){
+		if(true === in_array($context, $this->globalMethods)){
+			return true;
+		}else if(true === in_array($context, $this->exchangeMethods)){
+			return true;
+		}else{
+			return false;
+		}
+	}
 
 	/**
 	* perform further processing on the soap data before it gets passed to the exchange.

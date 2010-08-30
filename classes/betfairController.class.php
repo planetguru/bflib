@@ -38,6 +38,8 @@ class betfairController {
 	/**
 	* construct controller object
 	*
+	* @param none
+	* @return none
 	*/
         public function __construct( ){ 
 		/* initialize a logger object */
@@ -79,13 +81,56 @@ class betfairController {
 		$this->dialogue->getFunctionsFromWSDL();
 	}
 
-	/**
-	* Instantiate a betfairdialogue object, request function lists from the service WSDLs,
-	* log in and pass a request through the client, according to the current request 'context'
-	* Then hand over to the view class to render any output/soapresponse
+	/*
+	* Wrap the execute function, with a check for the method in the dialogue's associated wsdl files
+	* For methods which aren't in contect, provide bespoke logic/combinations
 	*
+	* @param none
+	* @return object $soapResult
 	*/
 	public function run(){
+		/* * check context.  If it doesn't live in the dialogue wsdls, then fall into combiner code */
+		if( $this->dialogue->hasContext($this->context)){
+			$soapResult = $this->execute();
+		}else{
+			/* special handlers for non betfair-native method calls */
+			switch($this->context){
+				case 'foo':
+					die('bar');
+					break;
+
+				case 'getRunnersAndPrices':
+					/* combiner to get market data (inc runner names) and all prices */
+					$this->context = 'getMarket';
+					$marketSoapResult = $this->execute();	
+					$this->context = 'getCompleteMarketPricesCompressed';
+					$runnerSoapResult = $this->execute();	
+
+					/* combiner logic */
+					foreach($marketSoapResult->allRunnerData as &$selection){
+						foreach($runnerSoapResult->Result->market->runners->Runner as &$runner){
+							if($runner->selectionId == $selection->selectionId){
+								$selection->name=$runner->name;
+							}
+						}
+					}
+		
+					return($marketSoapResult);
+
+					break;
+
+			}	
+		}
+		return ($soapResult);
+	}
+
+	/**
+	* Pass request through to betfairDialogue instance
+	* 
+	* @param none
+	* @return object $soapResult
+	*/
+	public function execute(){
 		/* if there is no context, there is nothing to run */
 		if( false === empty( $this->context )){
 			$this->data = $this->constructRequestData($this->context, $this->itemId);

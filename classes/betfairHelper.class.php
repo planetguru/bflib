@@ -56,6 +56,64 @@ class betfairHelper {
 		echo('</pre>');
 		exit();
 	}
+
+	/*
+	* Remove BSP prices from pre-prepared array of runner data as would be returned by 
+	* the extractVolumes method
+	* 
+	* @param $runnerData
+	* @return $runnerData
+	*/
+        public function removeBSPPrices( $runnerData ){
+                foreach($runnerData as $runner){
+                        $runner->newPrices = array();
+                        foreach($runner->prices as $price){
+                                unset($price->BSPBackAvailableAmount);
+                                unset($price->BSPLayAvailableAmount);
+                                unset($price->layAmountAvailable);
+                                $runner->newPrices[]=$price;
+                        }
+                        $runner->prices = $runner->newPrices;
+                }
+                return($runnerData);
+        }
+
+
+	/*
+	* Extract the top back prices and volumes for each runner on a market
+	*
+	* @param $runnerData as parsed from getCompleteMarketPricesCompressed, with name data added
+	* @return object $result
+	*/
+        public function extractVolumes( $runnerData ){
+                $runnerId = 0;
+
+                foreach($runnerData as $runnerItem){
+                        /* */
+                        $results['priceArray'][$runnerId]['name'] = (string)$runnerItem->name;
+                        $results['priceArray'][$runnerId]['selectionId'] = $runnerItem->selectionId;
+                        $results['priceArray'][$runnerId]['amountMatched'] = (string)($runnerItem->amountMatched);
+                        $savedPrice = 0;
+                        $savedAmount = 0;
+                        foreach($runnerItem->prices as $price){
+                                if(true === ($price->backAmountAvailable > 0)){
+                                        $price->odds = (string)$price->odds;
+                                        if($price->odds > $savedPrice){
+                                                $savedPrice = $price->odds;
+                                                $savedAmount = $price->backAmountAvailable;
+                                        }
+                                }
+                        }
+
+                        $results['priceArray'][$runnerId]['topBack']=sprintf("%.2f",$savedPrice);
+                        $results['priceArray'][$runnerId]['topBackVol']=sprintf("%.2f",$savedAmount);
+                        $runnerId++;
+                }
+
+                $result->resultSet = $results;
+
+                return($result);
+        }
 }
 
 ?>
