@@ -95,10 +95,6 @@ class betfairController {
 		}else{
 			/* special handlers for non betfair-native method calls */
 			switch($this->context){
-				case 'foo':
-					die('bar');
-					break;
-
 				case 'getRunnersAndPrices':
 					/* combiner to get market data (inc runner names) and all prices */
 					$this->context = 'getMarket';
