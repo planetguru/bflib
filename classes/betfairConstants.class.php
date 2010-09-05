@@ -46,8 +46,7 @@ class betfairConstants {
 	const ERROR_OK = 'OK';
 
 	/*
-	* non-service errors
-	* usually API related
+	* non-service errors - usually API related
 	*/
 	const ERROR_INTERNAL_ERROR 			= 'INTERNAL_ERROR';
 	const ERROR_EXCEEDED_THROTTLE 			= 'EXCEEDED_THROTTLE';
@@ -64,8 +63,7 @@ class betfairConstants {
 
 	/*
 	* service errors
-	* correspond to method-level issues eg
-	* missing required data, or parameters, or 
+	* correspond to method-level issues eg * missing required data, or parameters, or 
 	* event/market in a bad state
 	*/
 	const ERROR_EVENT_CLOSED = 'EVENT_CLOSED';
@@ -73,8 +71,9 @@ class betfairConstants {
 
 	/**
 	* Bet related constants
-	* 
 	*/
+	const MINIMUM_BET = 2;
+	
 	const BACK_BET_TYPE = 'B';
 	const LAY_BET_TYPE = 'L';
 
