@@ -83,7 +83,7 @@ class betfairController {
 
 	/*
 	* Wrap the execute function, with a check for the method in the dialogue's associated wsdl files
-	* For methods which aren't in contect, provide bespoke logic/combinations
+	* For methods which aren't in context, provide bespoke logic/combinations
 	*
 	* @param none
 	* @return object $soapResult
@@ -95,7 +95,7 @@ class betfairController {
 		}else{
 			/* special handlers for non betfair-native method calls */
 			switch($this->context){
-				case 'getRunnersAndPrices':
+				case 'getRunnersAndPrices':  //custom
 					/* combiner to get market data (inc runner names) and all prices */
 					$this->context = 'getMarket';
 					$marketSoapResult = $this->execute();	
@@ -103,18 +103,53 @@ class betfairController {
 					$runnerSoapResult = $this->execute();	
 
 					/* combiner logic */
-					foreach($marketSoapResult->allRunnerData as &$selection){
-						foreach($runnerSoapResult->Result->market->runners->Runner as &$runner){
+					foreach($runnerSoapResult->allRunnerData as &$selection){
+						/* capture the name of this runner */
+						foreach($marketSoapResult->Result->market->runners->Runner as &$runner){
 							if($runner->selectionId == $selection->selectionId){
 								$selection->name=$runner->name;
 							}
 						}
 					}
-		
-					return($marketSoapResult);
 
+					return($runnerSoapResult);
 					break;
 
+				case 'getRunnersAndTopPrices':  //custom
+					/* combiner to get market data (inc runner names) and top back prices */
+					$this->context = 'getMarket';
+					$marketSoapResult = $this->execute();	
+					$this->context = 'getCompleteMarketPricesCompressed';
+					$runnerSoapResult = $this->execute();	
+					$runnerSoapResult->Result->marketDataItems[0]->marketName = $marketSoapResult->Result->market->name;
+
+					/* combiner logic */
+					foreach($runnerSoapResult->allRunnerData as &$selection){
+						/* capture the name of this runner */
+						foreach($marketSoapResult->Result->market->runners->Runner as &$runner){
+							if($runner->selectionId == $selection->selectionId){
+								$selection->name=$runner->name;
+							}
+						}
+                        			$savedPrice = 0; $savedAmount = 0;
+						foreach($selection->prices as $price){
+							if(true === ($price->backAmountAvailable > betfairConstants::MINIMUM_BET)){
+								$price->odds = (string)$price->odds;
+								if($price->odds > $savedPrice){
+									$savedPrice = $price->odds;
+									$savedAmount = $price->backAmountAvailable;
+								}
+							}
+						}
+						$selection->topPrice = $savedPrice;
+						$selection->topPriceVol = $savedAmount;
+
+						/* remove the list of prices. I only want the top ones */
+						unset($selection->prices);
+					}
+
+					return($runnerSoapResult);
+					break;
 			}	
 		}
 		return ($soapResult);
