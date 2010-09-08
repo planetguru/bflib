@@ -212,7 +212,7 @@ class betfairDialogue {
 	* perform further processing on the soap data before it gets passed to the view
 	* this includes tasks like parsing market price data into structured form. It might
 	* make sense to move these out into seperate methods of a processor library if it gets
-	* too unwieldly.
+	* too unwieldy.
 	*
 	* @todo collapse to a switch statement; move data preparation to a helper class
 	* @param array $datain soap response object as returned from the active client
@@ -229,6 +229,10 @@ class betfairDialogue {
 			$market->marketId = substr($completeMarketPrices, 0, stripos($completeMarketPrices,'~'));
 			$withoutMarketidAndDelay = ltrim(strstr($completeMarketPrices, '~'),'~');
 			$withoutMarketidAndDelay = ltrim(strstr($withoutMarketidAndDelay, '~'),'~');
+
+			/* remove removed runners by taking everything before the first ':' */
+			$withoutMarketidAndDelay = ltrim(strstr($withoutMarketidAndDelay, ':'),':');
+			
 			$withoutMarketidAndDelay = ltrim($withoutMarketidAndDelay, ':');
 			$runners = explode(':',$withoutMarketidAndDelay);
 
