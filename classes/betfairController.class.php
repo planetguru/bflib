@@ -122,6 +122,7 @@ class betfairController {
 					$this->context = 'getCompleteMarketPricesCompressed';
 					$runnerSoapResult = $this->execute();	
 					$runnerSoapResult->Result->marketDataItems[0]->marketName = $marketSoapResult->Result->market->name;
+					$runnerSoapResult->Result->marketDataItems[0]->marketTime = $marketSoapResult->Result->market->marketTime;
 
 					/* combiner logic */
 					foreach($runnerSoapResult->allRunnerData as &$selection){
@@ -147,7 +148,6 @@ class betfairController {
 						/* remove the list of prices. I only want the top ones */
 						unset($selection->prices);
 					}
-
 					return($runnerSoapResult);
 					break;
 			}	

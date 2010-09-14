@@ -58,6 +58,76 @@ class betfairHelper {
 	}
 
 	/*
+	* Based on the increments defined in the Betfair odds ladder,
+	* indicate what the next incremental price would be from the price provided
+	*
+	* @param val - base price to test
+	* @return price - next increment up from val
+	*/
+		public function getNextIncrement($val){
+		if($val <1 ){
+			return 0;
+		}else if($val >=1 && $val<2){
+			return 0.01;
+		}else if($val >=2 && $val<3){
+			return 0.02;
+		}else if($val >=3 && $val<4){
+			return 0.05;
+		}else if($val >=4 && $val<6){
+			return 0.1;
+		}else if($val >=6 && $val<10){
+			return 0.2;
+		}else if($val >=10 && $val<20){
+			return 0.5;
+		}else if($val >=20 && $val<30){
+			return 1;
+		}else if($val >=30 && $val<50){
+			return 2;
+		}else if($val >=50 && $val<100){
+			return 0.5;
+		}else if($val >=100 && $val<1000){
+			return 10;
+		}else if($val >=1000){
+			return 0;
+		}
+	}
+
+	/*
+	* Based on the increments defined in the Betfair odds ladder,
+	* indicate what the next decremented price would be from the price provided
+	*
+	* @param val - base price to test
+	* @return price - next decrement down from val
+	*/
+	public function getNextDecrement($val){
+		if($val <1 ){
+			return 0;
+		}else if($val >1 && $val<=2){
+			return 0.01;
+		}else if($val >2 && $val<=3){
+			return 0.02;
+		}else if($val >3 && $val<=4){
+			return 0.05;
+		}else if($val >4 && $val<=6){
+			return 0.1;
+		}else if($val >6 && $val<=10){
+			return 0.2;
+		}else if($val >10 && $val<=20){
+			return 0.5;
+		}else if($val >20 && $val<=30){
+			return 1;
+		}else if($val >30 && $val<=50){
+			return 2;
+		}else if($val >50 && $val<=100){
+			return 0.5;
+		}else if($val >100 && $val<=1000){
+			return 10;
+		}else if($val >1000){
+			return 0;
+		}
+	}
+
+	/*
 	* Remove BSP prices from pre-prepared array of runner data as would be returned by 
 	* the extractVolumes method
 	* 
