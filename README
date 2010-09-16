@@ -24,21 +24,8 @@ The best way to get started with this library is to run through the tutorial of 
 set up your first betfair connection and issue a couple of API commands. You can read 
 that article here: http://www.spiration.co.uk/post/1438
 
-
-Alternatively, you could play with setting up the 'demo app' which is included alongside
-the core bflib classes. The app doesn't do anything useful, but it demonstrates how you
-can drill down through event types and markets down to an individual market level to
-view full information.
-
-To get started, extract the contents of the bflib archive into your document root.
-
-Next, you should edit the classes/vendorConstants.class.php file. In here you need to 
-specify your Betfair username and password.
-
-Then you should edit the  classes/betfairConstants.class.php  file.  In here, you will
-need to specify the Apache virtualhost which you will be running the demo under.
-
-Don't forget to include the .htaccess file in your 'www' folder.
+Secondly you could try writing a simple application, with working event navigation and
+market data views based on the tutorial here: http://www.spiration.co.uk/post/1442/
 
 You should also be sure to have PHP compiled with soap and ssl support.  If you are unsure, 
 the following PHP compliation works for me (with the supporting libs in place, of course):
@@ -52,44 +39,4 @@ the following PHP compliation works for me (with the supporting libs in place, o
 --with-curl \
 --enable-soap \
 --with-openssl
-
-
-MVC
-----
-
-The bflib code is loosely based on the MVC pattern, with the betfairDialogue class serving as the
-model. This is the class which you are least likely to modify, and if you do modify it, 
-it's the class you will most likely want to commit updates/patches to on github. 
-
-The 'view' is completely domain-specific. It is very likely that you will modify the view to get it 
-to construct completely different html fragments, or perhaps XML/JSON as output.  
-
-If you are writing a bot to run from the command line (with no web front-end), then you might not 
-even use the 'view' component and your handling of request elements will probably be simpler too.
-
-The controller behaves as glue between the whole lot, and demonstrates how you can envoke dialogue and view
-objects and pass data between them.  
-
-
-Note:
----------
-
-Please note that if you are attempting to view the demo app straight off your document root, you
-will need to make two changes:
-
-1) Modify the 'splitRequestParts()' method, decrementing the index in requestParts[<index>] by one
-2) Remove 'bflib' from the following line in your .htaccess:
-
-	RewriteRule ^(.*)$ /bflib/index.php [L]
-
-so that it reads:
-
-	RewriteRule ^(.*)$ /index.php [L]
-
-By doing this, you are telling the application that your index.php file lives directly within the 
-DocumentRoot and not under a subfolder.
-
-Likewise, if you have two directory layers under the documentroot before you encounter the index.php,
-you will need to increment the requestParts[<index>] value by one and reflect the new root path in your
-RewriteRule.
 
