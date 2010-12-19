@@ -64,6 +64,14 @@ class betfairController {
 	}
 
 	/**
+	* get the context 
+	*
+	*/
+	public function getContext(){
+		return($this->context);
+	}
+
+	/**
 	* set the itemid ready to pass into the dialogue object
 	*
 	*/
