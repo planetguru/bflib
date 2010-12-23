@@ -128,11 +128,26 @@ class betfairController {
 					$this->context = 'getMarket';
 					$marketSoapResult = $this->execute();	
 			
-					if($marketSoapResult->Result->market->marketStatus == betfairConstants::STATUS_MARKET_CLOSED){
-						throw new betfairException('market is closed');
+					if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_CLOSED){
+						throw new marketClosedException('market is closed');
+					}
+					if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_SUSPENDED){
+						throw new marketSuspendedException('market is suspended');
+					}
+					if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_INACTIVE){
+						throw new marketInactiveException('market is inactive');
 					}
 					$this->context = 'getCompleteMarketPricesCompressed';
 					$runnerSoapResult = $this->execute();	
+					if($runnerSoapResult->Result->errorCode == betfairConstants::ERROR_EVENT_CLOSED){
+						throw new marketClosedException('market is closed');
+					}
+					if($runnerSoapResult->Result->errorCode == betfairConstants::ERROR_EVENT_SUSPENDED){
+						throw new marketSuspendedException('market is suspended');
+					}
+					if($runnerSoapResult->Result->errorCode == betfairConstants::ERROR_EVENT_INACTIVE){
+						throw new marketInactiveException('market is inactive');
+					}
 					$runnerSoapResult->Result->marketDataItems[0]->marketName = $marketSoapResult->Result->market->name;
 					$runnerSoapResult->Result->marketDataItems[0]->marketTime = $marketSoapResult->Result->market->marketTime;
 					/* combiner logic */
