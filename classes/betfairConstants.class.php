@@ -62,12 +62,17 @@ class betfairConstants {
 	
 
 	/*
-	* service errors
-	* correspond to method-level issues eg * missing required data, or parameters, or 
+	* service errors correspond to method-level issues eg * missing required data, or parameters, or 
 	* event/market in a bad state
 	*/
 	const ERROR_EVENT_CLOSED = 'EVENT_CLOSED';
 
+
+	/*
+	* Market status codes
+	*
+	*/
+	const STATUS_MARKET_CLOSED = 'CLOSED';
 
 	/**
 	* Bet related constants

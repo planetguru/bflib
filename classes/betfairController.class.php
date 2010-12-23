@@ -119,6 +119,10 @@ class betfairController {
 					/* combiner to get market data (inc runner names) and top back prices */
 					$this->context = 'getMarket';
 					$marketSoapResult = $this->execute();	
+			
+					if($marketSoapResult->Result->market->marketStatus == betfairConstants::STATUS_MARKET_CLOSED){
+						throw new betfairException('market is closed');
+					}
 					$this->context = 'getCompleteMarketPricesCompressed';
 					$runnerSoapResult = $this->execute();	
 					$runnerSoapResult->Result->marketDataItems[0]->marketName = $marketSoapResult->Result->market->name;
