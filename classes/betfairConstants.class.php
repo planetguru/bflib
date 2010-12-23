@@ -66,13 +66,9 @@ class betfairConstants {
 	* event/market in a bad state
 	*/
 	const ERROR_EVENT_CLOSED = 'EVENT_CLOSED';
+	const ERROR_EVENT_SUSPENDED = 'EVENT_SUSPENDED';
+	const ERROR_EVENT_INACTIVE = 'EVENT_INACTIVE';
 
-
-	/*
-	* Market status codes
-	*
-	*/
-	const STATUS_MARKET_CLOSED = 'CLOSED';
 
 	/**
 	* Bet related constants
