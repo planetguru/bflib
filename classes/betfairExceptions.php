@@ -67,4 +67,11 @@ class soapErrorException extends betfairException{}
 */
 class marketSuspendedException extends betfairException{}
 
+/*
+* marketInactiveException
+*
+* @author Chris Lacy-Hulbert <chris@spiration.co.uk>
+*/
+class marketInactiveException extends betfairException{}
+
 ?>
