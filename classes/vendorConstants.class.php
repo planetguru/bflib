@@ -38,6 +38,12 @@ class vendorConstants {
 	const LOCATIONID   = 0;
 	const IPADDRESS    = 0;
 
+	/* define the read throttle for your vendor account - in reads per second 
+	* as detailed here: http://bdp.betfair.com/index.php?option=com_content&task=view&id=36&Itemid=62
+	*
+	*/
+	const READ_THROTTLE	= 5;
+
 	/**
 	* some settings which are more specific to the vendor/implementation than they are to the bflib core
 	*
