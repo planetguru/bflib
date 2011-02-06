@@ -177,6 +177,10 @@ class betfairController {
 					}
 					return($runnerSoapResult);
 					break;
+
+				default:
+					throw invalidMethodException();
+					break;
 			}	
 		}
 		return ($soapResult);

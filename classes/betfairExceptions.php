@@ -74,4 +74,11 @@ class marketSuspendedException extends betfairException{}
 */
 class marketInactiveException extends betfairException{}
 
+/*
+* marketInactiveException
+*
+* @author Chris Lacy-Hulbert <chris@spiration.co.uk>
+*/
+class invalidMethodException extends betfairException{}
+
 ?>
