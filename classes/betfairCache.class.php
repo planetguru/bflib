@@ -26,12 +26,11 @@
 class betfairCache {
 
 	// check to see if apc is installed
-	
 	// if it is, use apc methods
-
 	// otherwise, cache to disk, but caveat security issues with that
 
         private $cacheHandle;
+	private $cacheElements = array();
         private static $instance;
 
         private function __construct(){
@@ -46,9 +45,30 @@ class betfairCache {
                 return self::$instance;
         }
 
-        public function cache( $message ){
-                date_default_timezone_set('Europe/London');
-                fwrite($this->cacheHandle,"\n".date("F j Y, H:i:s").' '.$message);
+        public function store( $key, $value ){
+		if(FALSE === apc_store($key, $value, vendorConstants::CACHETTL )){
+			$this->cacheElements[$key]=$value;
+		}
+		return(TRUE);
         }
+
+        public function fetch( $key ){
+		$cachedValue = apc_fetch($key);
+		if(FALSE === $cachedValue){
+			if(TRUE === isset($this->cacheElements[$key])){	
+				return($this->cacheElements[$key]);
+			}
+			return(FALSE);
+		}else{
+			return($cachedValue);
+		}
+	}
+
+        public function remove( $key ){
+		if(FALSE === apc_delete($key)){
+			unset($this->cacheElements[$key]);
+		}
+		return(TRUE);
+	}
 }
 ?>
