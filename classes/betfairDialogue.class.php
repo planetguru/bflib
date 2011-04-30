@@ -19,8 +19,7 @@
 */
 
 /**
-* Serving as the Model for bflib (in MVC-speak), this class is responsible for querying
-* the various exchange soap interfaces, loading WSDL files, assembling function calls,
+* Communicates with the various exchange soap interfaces, loading WSDL files, assembling function calls,
 * setting and getting session tokens, request data, and current method context. Built as a singleton
 * since this can be called multiple times from the controller (esp when a login is performed prior to 
 * an exchange operation).
@@ -33,7 +32,6 @@ class betfairDialogue {
 	private $exchangeClient;
 	private $activeClient;
 	private $soapOptions;
-	private $sessionToken = '';
         private $data;
 	private $logger;
 
@@ -164,7 +162,8 @@ class betfairDialogue {
 		}else if(true === in_array($this->context, $this->exchangeMethods)){
 			$this->activeClient = $this->exchangeClient;
 		}else{
-			die('invalid method: '.$this->context.' passed');
+			betfairLogger::log('invalid method: '.$this->context.' passed');
+			die();
 		}
 		try {
 			$method = $this->context;		
@@ -379,7 +378,7 @@ class betfairDialogue {
 	*
 	*/
 	public function setSessionToken( $val ){
-		$this->sessionToken = $val;
+		betfairCache::store('sessionToken',$val, betfairConstants::SESSIONLIFETIME);
 	}
 
 	/**
@@ -388,7 +387,7 @@ class betfairDialogue {
 	* @return string representing lastest provided session token
 	*/
 	public function getSessionToken(){
-		return($this->sessionToken);
+		return(betfairCache::fetch('sessionToken'));
 	}
 
 	/**
