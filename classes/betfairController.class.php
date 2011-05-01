@@ -42,17 +42,31 @@ class betfairController {
 	* @return none
 	*/
         public function __construct( ){ 
+		/* start preparing the virgin soap message */
+		$this->soapMessage = array();
+		$this->soapMessage['request']=array();
+
 		/* initialize a logger object */
 		$this->logger = betfairLogger::getInstance();
 
-		/** first login - currently on every call with forced 'login' context **/
+		/* set up the Soap dialoge */
 		$this->prepareDialogue();
-		$loginresult = $this->login();
-		$logmessage = print_r($loginresult->Result->errorCode, true);
-		$this->logger->log( $logmessage );
-	
-		$this->soapMessage = array();
-		$this->soapMessage['request']=array();
+
+		//  If I have a sessionToken cached, skip the login
+		$sessionTokenCache = betfairCache::fetch($sessionToken);
+		if( FALSE === $sessionTokenCache ){
+			/* otherwise, log this controller in before we do anything else */
+			$loginresult = $this->login();
+			$sessionToken = $loginresult->Result->header->sessionToken;
+			$this->dialogue->setSessionToken($sessionToken);
+		}
+
+		/* at this point, I have either logged in and retrieved a sesssion, or I have a sessionToken
+		* in cache and so will add that to my soap message request.  The betfairDialogue should be extended
+		* to check for session expiries in all responses and purge the sessionToken cache element, which 
+		* would then force a re-login when this controller gets reinstantiated
+		*/
+		
 	}
 
 	/**
@@ -127,7 +141,7 @@ class betfairController {
 					/* combiner to get market data (inc runner names) and top back prices */
 					$this->context = 'getMarket';
 					$marketSoapResult = $this->execute();	
-					//betfairHelper::dump($marketSoapResult);//->Result->market->marketStatus);	
+					//betfairHelper::dump($marketSoapResult->Result->market->marketStatus);	
 					$this->logger->log($marketSoapResult->Result->market->marketStatus);
 					if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_CLOSED){
 						throw new marketClosedException('market is closed');
