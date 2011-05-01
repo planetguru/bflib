@@ -62,7 +62,9 @@ class betfairController {
 		}
 
 		/* at this point, I have either logged in and retrieved a sesssion, or I have a sessionToken
-		* in cache and so will add that to my soap message request.  The betfairDialogue should be extended
+		* in cache and so will add it to the soap message in the contructRequest method.  
+		*
+		* @TODO The betfairDialogue should be extended
 		* to check for session expiries in all responses and purge the sessionToken cache element, which 
 		* would then force a re-login when this controller gets reinstantiated
 		*/
@@ -254,8 +256,8 @@ class betfairController {
 
 
 	/** 
-	* Based on the context of this request and the 'id' pulled from the request URI,
-	* Set up some request parameters to be passed in the soap message by the dialogue object
+	* Based on the context of this request and the 'id' provided, set up request params to be passed
+	* in the soap message by the dialogue object
 	*
 	* @param $id the id on which the method will be run. Usually an integer, but could be an array of ints
 	* @param $url passed in for convenience in cases where the verb and target id are insufficient
