@@ -45,8 +45,8 @@ class betfairCache {
                 return self::$instance;
         }
 
-        public function store( $key, $value ){
-		if(FALSE === apc_store($key, $value, vendorConstants::CACHETTL )){
+        public function store( $key, $value, $ttl=vendorConstants::CACHETTL ){
+		if(FALSE === apc_store($key, $value, $ttl)){
 			$this->cacheElements[$key]=$value;
 		}
 		return(TRUE);
