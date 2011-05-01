@@ -38,6 +38,9 @@ class betfairConstants {
         /*  not yet implemented, but enable to turn on verbose logging */
         CONST LOGGER_MODE = false;
         CONST CURRENCY_CODE = 'GBP';
+	
+	/* TTL controls */
+	CONST SESSIONLIFETIME = 432000;  // life of login session in seconds
 
 	/**
 	* Error codes
