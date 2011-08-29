@@ -53,7 +53,7 @@ class betfairController {
 		$this->prepareDialogue();
 
 		//  If I have a sessionToken cached, skip the login
-		$sessionTokenCache = betfairCache::fetch($sessionToken);
+		$sessionTokenCache = betfairCache::fetch('sessionToken');
 		if( FALSE === $sessionTokenCache ){
 			/* otherwise, log this controller in before we do anything else */
 			$loginresult = $this->login();
