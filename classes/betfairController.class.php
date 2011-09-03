@@ -54,7 +54,7 @@ class betfairController {
 
 		//  If I have a sessionToken cached, skip the login
 		$sessionTokenCache = betfairCache::fetch('sessionToken');
-		if( FALSE === $sessionTokenCache ){
+		if( FALSE == $sessionTokenCache ){
 			/* otherwise, log this controller in before we do anything else */
 			$loginresult = $this->login();
 			$sessionToken = $loginresult->Result->header->sessionToken;
@@ -143,16 +143,18 @@ class betfairController {
 					/* combiner to get market data (inc runner names) and top back prices */
 					$this->context = 'getMarket';
 					$marketSoapResult = $this->execute();	
-					//betfairHelper::dump($marketSoapResult->Result->market->marketStatus);	
-					$this->logger->log($marketSoapResult->Result->market->marketStatus);
-					if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_CLOSED){
-						throw new marketClosedException('market is closed');
-					}
-					if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_SUSPENDED){
-						throw new marketSuspendedException('market is suspended');
-					}
-					if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_INACTIVE){
-						throw new marketInactiveException('market is inactive');
+					// If this result bears marketStatus data, handle it appropriately
+					if(isset($marketSoapResult->Result->market->marketStatus)){
+						$this->logger->log($marketSoapResult->Result->market->marketStatus);
+						if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_CLOSED){
+							throw new marketClosedException('market is closed');
+						}
+						if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_SUSPENDED){
+							throw new marketSuspendedException('market is suspended');
+						}
+						if($marketSoapResult->Result->market->marketStatus == betfairConstants::ERROR_EVENT_INACTIVE){
+							throw new marketInactiveException('market is inactive');
+						}
 					}
 					$this->context = 'getCompleteMarketPricesCompressed';
 					$runnerSoapResult = $this->execute();	
