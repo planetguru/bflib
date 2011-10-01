@@ -177,6 +177,12 @@ class betfairController {
 					$runnerSoapResult->Result->menuPath = $marketSoapResult->Result->market->menuPath;
 					$runnerSoapResult->Result->parentEventId = $marketSoapResult->Result->market->parentEventId;
 
+					/* turn the path items to an array, remove zero'th element from path items and eventid hierarchy */
+					$breadcrumbNodes = explode("\\",$runnerSoapResult->Result->menuPath);
+					$del = array_shift($breadcrumbNodes);
+					$del = array_shift($runnerSoapResult->Result->eventHierarchy->EventId);
+					$runnerSoapResult->Result->breadcrumbNodes = $breadcrumbNodes;
+
 					/* combiner logic */
 					foreach($runnerSoapResult->allRunnerData as &$selection){
 						/* capture the name of this runner */
