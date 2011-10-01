@@ -141,6 +141,8 @@ class betfairController {
 
 				case 'getRunnersAndTopPrices':  //custom
 					/* combiner to get market data (inc runner names) and top back prices */
+					/* also retrieves parent event id, breadcrumb string and event heirarchy */
+
 					$this->context = 'getMarket';
 					$marketSoapResult = $this->execute();	
 					// If this result bears marketStatus data, handle it appropriately
@@ -169,6 +171,12 @@ class betfairController {
 					}
 					$runnerSoapResult->Result->marketDataItems[0]->marketName = $marketSoapResult->Result->market->name;
 					$runnerSoapResult->Result->marketDataItems[0]->marketTime = $marketSoapResult->Result->market->marketTime;
+
+					/* add event heirarchy/breadcrumb elements to result object*/
+					$runnerSoapResult->Result->eventHierarchy = $marketSoapResult->Result->market->eventHierarchy;
+					$runnerSoapResult->Result->menuPath = $marketSoapResult->Result->market->menuPath;
+					$runnerSoapResult->Result->parentEventId = $marketSoapResult->Result->market->parentEventId;
+
 					/* combiner logic */
 					foreach($runnerSoapResult->allRunnerData as &$selection){
 						/* capture the name of this runner */
@@ -205,7 +213,7 @@ class betfairController {
 	}
 
 	/**
-	* Pass request through to betfairDialogue instance
+	* Pass requet through to betfairDialogue instance
 	* 
 	* @param none
 	* @return object $soapResult
@@ -248,12 +256,14 @@ class betfairController {
 	*
 	*/
 	public function addRequestElement($key, $value){
+		//echo ('<pre>'); var_dump($this->soapMessage); echo ('</pre>');
 		if(true === is_array($value)){
 			$this->soapMessage['request'][$key] = array();
 			$this->soapMessage['request'][$key] = $value;
 		}else{
 			$this->soapMessage['request'][$key] = $value;
 		}
+		//echo ('<pre>'); var_dump($this->soapMessage); echo ('</pre>');exit();
 	}
 
 
