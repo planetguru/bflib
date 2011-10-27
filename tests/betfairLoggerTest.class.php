@@ -13,17 +13,16 @@ spl_autoload_register('customAutoload');
 class betfairLoggerTest extends PHPUnit_Framework_TestCase {
 
 	private $logger;
-	private $logfile = '/tmp/logtestfile';
-	private $message = "\nthis is a test";
+	private $message;
 
 	protected function setUp() {
  		$this->logger = betfairLogger::getInstance();
-		$this->logger->logHandle = fopen($this->logfile,'w');
+		$this->message = "\nthis is a test " . rand();
 	}
 
 	public function testbetfairLogger () {
 		$this->logger->log($this->message);
-		$file = $this->logfile;
+		$file = vendorConstants::LOGFILE;
 		$data = file($file);
 		$line = $data[count($data)-1];
 		$this->assertTrue(TRUE, $line == $this->message);
