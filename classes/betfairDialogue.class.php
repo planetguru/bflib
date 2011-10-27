@@ -30,7 +30,7 @@
 class betfairDialogue {
 	private $globalClient;
 	private $exchangeClient;
-	private $activeClient;
+	public $activeClient;
 	private $soapOptions;
         private $data;
 	private $logger;
