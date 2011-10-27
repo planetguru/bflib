@@ -24,7 +24,7 @@
 * @author Chris Lacy-Hulbert <chris@spiration.co.uk>
 */
 class betfairLogger {
-        private $logHandle;
+        public static $logHandle;
         private static $instance;
 
         private function __construct(){
